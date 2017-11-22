@@ -1,0 +1,53 @@
+\chapter{Réseaux de neurones}
+
+\section{Problème et de classification}
+Dans la théorie de l'apprentissage statistique, la classification a pour objectif de déduire d'un nombre fini d'observations indépendantes une partition de l'espace en un ensemble a priori inconnu de domaines de l'espace appelés classes. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                               A COMPLETER                                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Apprentissage supervisé}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                               A COMPLETER                                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\section{Structure d'un neurone}
+
+L'extraordinaire capacité d'apprentissage et d'adaptation des réseaux de neurones biologiques a poussé les scientifiques à tenter de modéliser informatiquement leur fonctionnement afin d'exploiter ces capacités. 
+
+Les observations biologiques ont mené au premier modèle du neurone, divisé en 3 parties. Le neurone reçoit des signaux chimio-électriques par ses dendrites; ces signaux sont traités dans le corps cellulaire, où un effet de seuil est appliqué; enfin l'axone permet la transmission du signal chimio-électrique de sortie. De nouvelles découvertes sur les neurones ont permis de complexifier grandement ce modèle, mais c'est celui qui sert de base aux neurones artificiels. \\
+
+\begin{definition}[Neurone] Un neurone à $n$ entrées permet de modéliser une fonction de $\R^n$ dans $\R$. Un neurone est défini par la données de trois paramètres :
+  \begin{itemize}
+    \item un vecteur de poids $\omega \in \R^n$
+    \item un biais $b \in \R$
+    \item une fonction d'activation $g \in \R^\R$
+  \end{itemize}
+
+La fonction $f$ modélisée par le neurone s'écrit alors : 
+  \begin{equation}
+\forall x \in \R^n, f(x) = g(\omega^{T}x - b) = g(\sum_{i=0}^{n-1}\omega_{i}x_{i} - b)
+  \label{neuron_function_equation}
+  \end{equation}
+\end{definition}    
+\begin{remark}[Biais]
+
+Il est possible de rajouter une composante $x_{n} = -1$ à tous les vecteurs d'entrées afin de pouvoir considérer le biais $b$ comme la composante $\omega_n$ du vecteur de poids. L'équation \eqref{neuron_function_equation} devient alors
+  \begin{equation}
+\forall x \in \R^n, f(x) = g(\omega^{T}x) = g(\sum_{i=0}^{n}\omega_{i}x_{i})  
+  \label{corrected_neuron_function_equation}
+  \end{equation}
+
+Cependant, considérer le biais comme un poids pose des problèmes lorsqu'on utilise l'approche des graphes de calculs, qui sera explicités dans la suite de ce rapport. Nous n'avons donc pas applique cette simplification pour nos propres réseaux.
+
+\end{remark}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%                               A COMPLETER                                       %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\section{Réseaux de neurones}
+\section{Correction par rétropropagation du gradient}

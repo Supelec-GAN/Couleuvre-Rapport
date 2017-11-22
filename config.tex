@@ -1,5 +1,24 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage{lmodern}
-\usepackage[french]{french}
 \usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{french}
+
+\usepackage[left=3cm, right = 3cm, top = 3cm]{geometry}
+
+
+% Facilite l'écriture de paragraphes de définitions, grâce à la commande \begin{definition}
+\theoremstyle{definition}
+\newtheorem{definition}{Définition}
+\newtheorem{conjecture}{Conjecture}
+
+% Facilite l'écriture de paragraphes de remarques et d'exemples, grâce à la commande \begin{example}
+\theoremstyle{remark}
+\newtheorem{remark}{Remarque}
+\newtheorem{example}{Exemple}
+
+% Symbole R des réels 
+\def\R{\textrm{I\kern-0.21emR}}
