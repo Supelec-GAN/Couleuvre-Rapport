@@ -19,7 +19,8 @@ L'extraordinaire capacité d'apprentissage et d'adaptation des réseaux de neuro
 
 Les observations biologiques ont mené au premier modèle du neurone, divisé en 3 parties. Le neurone reçoit des signaux chimio-électriques par ses dendrites; ces signaux sont traités dans le corps cellulaire, où un effet de seuil est appliqué; enfin l'axone permet la transmission du signal chimio-électrique de sortie. De nouvelles découvertes sur les neurones ont permis de complexifier grandement ce modèle, mais c'est celui qui sert de base aux neurones artificiels. \\
 
-\begin{definition}[Neurone] Un neurone à $n$ entrées permet de modéliser une fonction de $\R^n$ dans $\R$. Un neurone est défini par la données de trois paramètres :
+\begin{definition}[Neurone] 
+Un neurone à $n$ entrées permet de modéliser une fonction de $\R^n$ dans $\R$. Un neurone est défini par la données de trois paramètres :
   \begin{itemize}
     \item un vecteur de poids $\omega \in \R^n$
     \item un biais $b \in \R$
@@ -33,7 +34,6 @@ La fonction $f$ modélisée par le neurone s'écrit alors :
   \end{equation}
 \end{definition}    
 \begin{remark}[Biais]
-
 Il est possible de rajouter une composante $x_{n} = -1$ à tous les vecteurs d'entrées afin de pouvoir considérer le biais $b$ comme la composante $\omega_n$ du vecteur de poids. L'équation \eqref{neuron_function_equation} devient alors
   \begin{equation}
 \forall x \in \R^n, f(x) = g(\omega^{T}x) = g(\sum_{i=0}^{n}\omega_{i}x_{i})  
@@ -50,4 +50,10 @@ Cependant, considérer le biais comme un poids pose des problèmes lorsqu'on uti
 
 
 \section{Réseaux de neurones}
+
+Les possibilités limitées d'un neurone seul ont donc poussé l'informatique à agencer les neurones en réseaux afin de créer des modèles plus complexes. \\
+
+\begin{definition}[Réseau de neurone] 
+Un réseau de neurones est défini par un graphe orienté $\mathcal{G}(V, A)$ où les n\oe{}uds sont des neurones et les arêtes des liens entre les neurones et par un ensemble de neurones d'entrée $V_{in} \subset V$ et de neurones de sorties $V_{out} \subset V$. Une arête partant d'un neurone $i$ vers un neurone $j$ signifie que la sortie du neurone $i$ est une entrée pour le neurone $j$. Notons $f_{j}$ la fonction représentant le neurone $j$. Finalement, nous noterons un réseau $\mathcal{N}(V, A, V_{in}, V_{out}, f)$ où $f$ est l'ensemble des fonctions des neurones.
+\end{definition}
 \section{Correction par rétropropagation du gradient}
