@@ -40,7 +40,7 @@ Il est possible de rajouter une composante $x_{n} = -1$ à tous les vecteurs d'e
   \label{corrected_neuron_function_equation}
   \end{equation}
 
-Cependant, considérer le biais comme un poids pose des problèmes lorsqu'on utilise l'approche des graphes de calculs, qui sera explicités dans la suite de ce rapport. Nous n'avons donc pas applique cette simplification pour nos propres réseaux.
+Cependant, considérer le biais comme un poids pose des problèmes lorsqu'on utilise l'approche des graphes de calculs, qui sera explicités dans la suite de ce rapport. Nous n'avons donc pas appliqué cette simplification pour nos propres réseaux.
 
 \end{remark}
 
@@ -53,7 +53,42 @@ Cependant, considérer le biais comme un poids pose des problèmes lorsqu'on uti
 
 Les possibilités limitées d'un neurone seul ont donc poussé l'informatique à agencer les neurones en réseaux afin de créer des modèles plus complexes. \\
 
-\begin{definition}[Réseau de neurone] 
-Un réseau de neurones est défini par un graphe orienté $\mathcal{G}(V, A)$ où les n\oe{}uds sont des neurones et les arêtes des liens entre les neurones et par un ensemble de neurones d'entrée $V_{in} \subset V$ et de neurones de sorties $V_{out} \subset V$. Une arête partant d'un neurone $i$ vers un neurone $j$ signifie que la sortie du neurone $i$ est une entrée pour le neurone $j$. Notons $f_{j}$ la fonction représentant le neurone $j$. Finalement, nous noterons un réseau $\mathcal{N}(V, A, V_{in}, V_{out}, f)$ où $f$ est l'ensemble des fonctions des neurones.
+\begin{definition}[Réseau de neurone - Perceptrons] 
+Un réseau de neurones est défini par un graphe orienté $\mathcal{G}(V, A)$ où les n\oe{}uds sont des neurones et les arêtes des liens entre les neurones et par un ensemble de neurones d'entrée $V_{in} \subset V$ et de neurones de sorties $V_{out} \subset V$. Une arête partant d'un neurone $i$ vers un neurone $j$ signifie que la sortie du neurone $i$ est une entrée pour le neurone $j$. Notons $f_{j}$ la fonction représentant le neurone $j$. Finalement, nous noterons un réseau $\mathcal{N}(V, A, V_{in}, V_{out}, f)$ où $f$ est l'ensemble des fonctions des neurones.\\
 \end{definition}
-\section{Correction par rétropropagation du gradient}
+
+\begin{definition}[Perceptron]
+Un réseau de neurones est de type perceptron lorsque le graphe qui le représente est acyclique (réseau feedforward) et qu'il peut être représenté comme une suite finie de couches de neurones telle que les sorties d'une couche sont exactement les entrées de la couche suivante.
+\end{definition} 
+
+\section{Propagation dans un perceptron}
+
+On cherche à obtenir les équations qui régissent la propagation des entrées dans un réseau perceptron. Comme les neurones sont agencées par couches, on peut indicer chaque neurone par son numéro de couche et sa position dans la couche. De plus, on parlera dans la suite indistinctement du neurone ou de la fonction qu'il modélise. 
+
+Alors, soit un réseau perceptron à $N$ couches. Pour $i \in \brackets{1,\ N}$ soit $n_i$ le nombre de neurones de la couche $i$. Pour tout $i,j $ tel que $i \in \brackets{1,\ N}, j \in \brackets{1,\ n_i}$, le neurone $(i,j)$ est défini par 
+\begin{itemize}
+  \item sa fonction d'activation $f_{i,j}$ 
+  \item son vecteur de poids $\omega_{i,j}$
+  \item son biais $b_{i,j}$
+\end{itemize}
+
+Comme on est dans un réseau perceptron, tous les neurones de la couche $i-1$ sont connectés au neurone $(i,j)$. Par conséquent le vecteur d'entrée de ce neurone est un vecteur $X_n$ de dimension $n_{i-1} \times 1$. Alors la sortie du neurone $(i,j)$ est égale à $f_{i,j}(\omega_{i,j}X_{i-1}^T - b_{i,j})$. En écrivant $X_n = \begin{pmatrix}X_0^n & ... & X_{n_i-1}^n\end{pmatrix}^T$, on a alors la relation de récurrence 
+\begin{equation}
+  X_i^{j+1} = f_{j,i}(\omega_{j,i}X_j^T - b_{j,i})
+  \label{equation_propagation_coefficients}
+\end{equation}
+
+Dans un réseau perceptron, on suppose de plus que toutes les fonctions d'activations des neurones d'une même couche sont identiques. On a alors $\forall i \in \brackets{1,\ N},\ \forall j \in \brackets{1,\ n_i},\ f_{i,j} = f_i$
+On peut alors réécrire l'équation \eqref{equation_propagation_coefficients} sous forme matricielle. On pose
+
+\begin{align*}
+\forall i \in \brackets{1,\ N},\ F_i &= \begin{pmatrix} f_i & ... & f_i \end{pmatrix}\quad \text{(Fonction d'activation de la couche)}\\
+                            W_i &= \begin{pmatrix} \omega_{i,0} \mid & ... & \mid \omega_{i, n_i-1}\end{pmatrix}^T \quad \text{(Matrice des poids de la couche)} \\
+                            B_i &= \begin{pmatrix} b_{i, n_i-1} & ... & b_{i, n_i-1}\end{pmatrix}^T 
+\end{align*}
+
+En nommant $X_0$ le vecteur en entrée du perceptron, on a la nouvelle équation matricielle : 
+\begin{equation}
+  \forall i \in \brackets{1,\ N},\ X_i = F_i(W_i X_{i-1} - B_i) 
+  \label{equation_propagation_matricielle}
+\end{equation}

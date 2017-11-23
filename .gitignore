@@ -184,3 +184,6 @@ TSWLatexianTemp*
 
 # Other
 *.db
+
+# Pour ne pas commit le pdf
+*.pdf
