@@ -24,3 +24,43 @@ Le diagramme UML comporte une classe principale, Application, qui va gérer les 
 \subsection{DataCollector}
 
 \section{Etude du XOR}
+
+Le problème du XOR est un problème de classification standard, auquel toutes les méthodes de classification sont confrontées. Nous avons donc naturellement commencé par le traitement de ce problème pour nous exercer à la manipulation des perceptrons.
+
+\subsection{Definition du problème}
+
+Le problème du XOR est un problème en deux dimension : les entrées sont des paires $(x_1,\ x_2)$ et la sortie est un booléen. Deux approches différentes existent, selon le choix du domaine de définition : 
+
+\begin{itemize}
+  \item 1\textsuperscript{er} choix : on veut obtenir un XOR purement booléen, dont les 4 entrées possibles sont les paires $(0,0)\ (0,1),\ (1,0),\ (1,1)$. Les résultats attendus sont respectivements $0,\ 1,\ 1,\ 0$.
+  \item 2\textsuperscript{nd} choix : on veut obtenir un XOR défini sur le carré unité du plan : ${(x,y) \in [-1,1]^2}$. Dans ce cas, on attend du XOR qu'il renvoie $1$ lorsque $x \times y < 0$ et $0$ sinon. On fait donc un XOR sur le signe des coordonnées.
+\end{itemize}
+
+Selon l'approche, le réseau requis sera différent. Dans le premier cas, il est possible de classifier les 4 points selon leur appartenance à un ensemble convexe (qui prend la forme d'une bande). Par conséquent, le problème peut se résoudre avec deux couches de neurones.
+
+Dans le second cas, il faut séparer le plan en 4 quadrants, et regrouper les quadrants par deux. On obtient des classes non convexes, et le problème requiert 3 couches de neurones pour être résolu.
+
+Nous avons choisi de travailler sur la deuxième situation, le but est donc d'obtenir un réseau qui découpe le carré unité en quatre quadrants bien distincs, qui correspondent aux quatre quadrants délimités par les axes des abscisses et des ordonnées.
+
+\subsection{Résolution}
+
+Il s'agit d'un problème à deux dimensions, renvoyant une seule valeur, et nécessitant 3 couches cachées. Nous optons donc pour un réseau 2-2-1. 
+
+Qualitativement, on peut dire que 
+\begin{itemize}
+  \item les deux neurones de la première couche vont se charger de tracer les deux droites correspondant aux abscisses et aux ordonnées
+  \item les deux neurones de la seconde couche vont se charger de réaliser les fonctions \"ou\" et \"et\" sur les quadrants ainsi tracés, afin de d'obtenir deux quadrants correspondants au résultat $1$ et deux quadrants correspondants aux résultat $0$.
+  \item la troisième couche se charge de réaliser la fonction \"ou\" sur les résultats renvoyés par la couche 2, afin que le résultat final soit $1$ si le point se trouve dans l'un des deux quadrants correspondant au résultat $1$.
+\end{itemize}
+
+De plus, nous avons choisi d'utiliser des fonctions d'activations sigmoides en $\frac{1}{1+exp(-\lambda x}$. Ce choix empêche d'avoir un résultat booléen à la fin, puisque la valeur de sortie varie continument entre $0$ et $1$. Le résultat est donc une densité de probabilité.
+
+Enfin, nous utilisons un pas d'apprentissage de $\eta <= 0.01$. Bien que la littérature suggère souvent le pas empirique $\eta = 0.2$, la valeur de $0.01$ est la valeur maximale que nous ayons trouvée qui permette au XOR de converger. Au delà, le réseau se bloque presque systématiquement dans un état non désiré.
+
+Avec une dizaine de milliers d'apprentissages, on obtient le résultat suivant : 
+
+\begin{figure}[h!]
+  \centering
+  \includegraphics[scale=0.5]{images/resultat_xor.png}
+  \caption{Résultat d'un XOR sur $1000$ tests après $10000$ apprentissages pour un réseau 2-2-1}
+\end{figure}
