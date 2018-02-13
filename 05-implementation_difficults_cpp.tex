@@ -1,0 +1,25 @@
+\chapter{Implémentation en C++ et problèmes rencontrés}
+
+Ce chapitre a pour but d'aider les prochains qui souhaiteraient coder en C++ pour qu'ils ne se heurtent pas aux même ecueils que nous, et qu'ils puissent passer plus de temps sur la conception du projet plutôt que sur le debug et la recherche d'outils efficaces.
+
+\section{Outils utilisés}
+
+\subsection{IDE}
+
+Il est important que chaque membre développe dans un IDE qui lui soit familier, et qui offre un minimum d'ergonomie et d'efficacité. Dans le projet, les IDE utilisés ont été :
+\begin{itemize}
+    \item XCode, pour développer sous MAC. 
+    \item QtCreator, disponible sous Linux et Windows (bien qu'il soit un peu plus pénible à installer sous windows).
+    \item Vim, déconseillé à ceux qui ne maîtrisent pas l'outil, mais qui peut se révéler très puissant avec les bons plugins.
+\end{itemize}
+
+Chaque IDE venant avec ses propres fichiers de configuration, nous conseillons de nommer ceux-ci du nom de leur utilisateur (typiquement john\_doe.pro.user) ou de les ajouter au .gitignore afin d'éviter les conflits.
+
+\subsection{Eigen}
+
+Les réseaux de neurones de type perceptron reposent largement sur les produits matriciels. Afin d'effectuer ces calculs le plus efficacement possible, notre code utilise le framework C++ Eigen. Ce framework permet de manipuler l'algèbre linéaire et les matrices de manière la plus optimale possible. De plus, Eigen utilise openmp ce qui permet de paralléliser les calculs sur l'ensemble des coeurs. 
+
+De ce que nous avons pu voir, il n'existe aucune alternative à Eigen qui offre autant de possibilités et d'optimisation. Cependant Eigen n'est pas facile à manipuler au premier abord. Sa construction entièrement à base de template et organisée de façon à pouvoir effectuer le plus de calculs possible en compile-time rendent les types des objets et les messages d'erreur difficilement déchiffrables. Debugguer un problème lié à Eigen nécessite un bon débuggueur et de la patience. 
+De plus, la méthode de parallélisation d'Eigen reste assez obscure. Le framework semble paralléliser les calculs en colonnes, c'est à dire qu'il calcule simultanément les colonnes de la matrices résultante d'un calcul. Autrement dit, si le résultat est une ligne, le calcul sera parallélisé, mais si c'est une colonne il ne tournera que dans un seul thread. Ceci implique de n'utiliser que des matrices lignes dans le code, bien que tous les calculs menés théoriquement soient faits avec des colonnes. Attention donc à transposer correctement.
+
+
