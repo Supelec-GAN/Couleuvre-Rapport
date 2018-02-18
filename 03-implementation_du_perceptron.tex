@@ -19,9 +19,21 @@ Le diagramme UML comporte une classe principale, Application, qui va gérer les 
 \end{center}
 \end{figure} 
 
+\subsection{NeuronLayer}
+
+Une instance de la classe \textbf{NeuronLayer} représente une couche de neurones. Comme nous utilisons la représentation matricielle des réseaux perceptrons, une couche de neneurones n'est constituée que d'une matrice de poids, d'un vecteur de biais et d'une fonction d'activation. Si $input$ et $output$ représentent respectivement la dimension du vecteur d'entrée et de sortie de la couche, alors on a les dimensions suivantes (on travaille en ligne) :
+\begin{itemize}
+	\item La matrice de poids est de dimension $input \times output$
+	\item Le vecteur de biais est un vecteur ligne de dimension $output$
+\end{itemize}
 \subsection{NeuralNetwork}
 
+Une instance de la classe \textbf{NeuralNetwork} représente un réseau perceptron, c'est à dire plusieurs couches de neurones (\texbf{NeuronLayer}) mises les unes à la suite des autres. Chaque couche de neurone reçoit en entrée la sortie de la couche précédente et transmet sa sortie à la couche suivante. 
+Pour représenter cet objet, nous avons utilisée la structure de liste simplement chaînée. La class \textbf{NeuralNetwork} hérite donc de la classe \textbf{std::list<NeuronLayer>}. Cette structure légère et robuste permet d'itérer facilement sur toutes les couches du réseau. 
+
 \subsection{DataCollector}
+
+Afin de collecter les données du réseau et de pouvoir effectuer un traitement statistique dessus (calcul de moyenne, ecart-type, intervalle de confiance...) nous avons écrit la classe \textbf{DataCollector}. Elle se charge de récupérer les sorties du réseau, d'effectuer des calculs statistiques standards et de les exporter au format \textbf{.csv} afin de permettre une visualisation facile de toutes les données.
 
 \section{Etude du XOR}
 
