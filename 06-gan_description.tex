@@ -10,24 +10,26 @@ Dans ce chapitre, nous décrirons qualitativement le fonctionnement attendu des 
 
 Le GAN est une structure qui fait intervenir deux réseaux placés en compétition, qui vont s'émuler mutuellement afin d'atteindre un optimum, ceci en partant de rien. Les GAN représentent un domaine de recherche qui s'est ouvert en 2014 avec la publication d'un article de Ian Goodfellow.
 
-\subsection {L'article de Ian Goodfellow, la naissance du GAN}
-
 En 2014,l'équipe de Ian Goodfellow publie dans NIPS un article intitulé \textbf{Generative Adversarial Nets}, dans lequel il décrit une nouvelle structure censée répondre au problème de génération de donnée. Cette structure est fondée sur l'entraînement simultané de deux réseaux neuronaux en compétition, respectivement nommés \textbf{Générateur} et \textbf{Discriminateur}.  
 
 % A compléter avec l'article en question
 
-\subsection{Description qualitative du fonctionnement du GAN}
+\subsection{GAN - Idée générale}
 
 Pour commencer, on souhaite obtenir un réseau qui soit capable de générer sur commande des données 
 \begin{itemize}
-    \item Pertinentes par rapport aux contraintes qu'on lui impose (exemple : on souhaite pouvoir obtenir un réseau qui dessine spécifiquement des moutons, et non un réseau qui dessine n'importe quoi comme bon klui semble)
+    \item Pertinentes par rapport aux contraintes qu'on lui impose (exemple : on souhaite pouvoir obtenir un réseau qui dessine spécifiquement des moutons, et non un réseau qui dessine n'importe quoi comme bon lui semble)
     \item Variées, c'est à dire que les données générées sont différentes deux a deux
-    \item Réalistes, voire indiscernables de données réelles aux yeux d'un humain 
-\end{itemize}
+    \item Réalistes, voire indiscernables de données réelles aux yeux d'un humain \\
+\end{itemize} 
 
 En résumé on souhaite construire un réseau (nommé dans toute la suite \textbf{Générateur}) qui modélise une projection d'un ensemble d'entrée vers l'ensemble des données réalistes et pertinentes vis-à-vis des contraintes imposées, et dont l'image ne soit pas réduite à un point de cet ensemble.
 
-Résumée de cette façon, la tâche semble extraordinairement ardue, c'est pourquoi la structure fait appel à un second réseau (nommé \textbf{Discriminateur} dans toute la suite).
+Résumée de cette façon, la tâche semble extraordinairement ardue, c'est pourquoi la structure fait appel à un second réseau (nommé \textbf{Discriminateur} dans toute la suite). En effet, la difficulté principale liée aux réseaux de neurones est l'apprentissage. Dans ce cas en particulier, la difficulté majeure  est de caractériser ce qu'est une donnée de synthèse \"pertinente et réaliste, voire indiscernable d'une donnée réelle\"; car s'il est très facile de distinguer à l'oeil une image de mouton de n'importe quoi d'autre, il est extrêmement difficile de construire un critère mathématique permettant de distinguer les images de mouton des autres. Or c'est ce critère dont nous avons besoin pour faire apprendre correctement à notre \textbf{Générateur}.
+
+Cependant, nous avons vus avec les perceptrons et la base de données MNIST qu'il était parfaitement possible d'obtenir un réseau de neurones modélisant avec une grande précision des critères visuels, que l'on serait bien incapables d'exprimer mathématiquement. Il est par exemple impossible d'écrire analytiquement ce qu'est un chiffre manuscrit, mais il est parfaitement possible de générer un réseau de neurones qui sache discriminer les chiffres manuscrits des autres images. Ainsi, en déléguant à un second réseau la responsabilité de modéliser le critère selon lequel nous voulons que nos données soient générées (exemple: on ne veut générer que des images de mouton, on va faire apprendre au \textbf{Discriminateur} à différencier un mouton de toutes les autres images possibles), on résout le (premier) problème majeur qui se pose. 
+
+\subsection{Des réseaux en compétition}
 
 \section{Discriminateur et générateur}
 \subsection{Théorie des jeux et équilibre de Nash}
