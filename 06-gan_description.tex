@@ -6,10 +6,28 @@ La naissance du GAN se place dans un contexte de recherche de moyens innovants e
 
 Dans ce chapitre, nous décrirons qualitativement le fonctionnement attendu des GANs et leur théorie, puis nous détaillerons les aspects plus techniques et mathématiques du problème. 
 
-\section{Description du fonctionnement des réseaux GAN}
+\section{Description du fonctionnement des \textit{Generative Adversarial Networks}}
+
+Le GAN est une structure qui fait intervenir deux réseaux placés en compétition, qui vont s'émuler mutuellement afin d'atteindre un optimum, ceci en partant de rien. Les GAN représentent un domaine de recherche qui s'est ouvert en 2014 avec la publication d'un article de Ian Goodfellow.
+
 \subsection {L'article de Ian Goodfellow, la naissance du GAN}
-\subsection{Les objectifs du GAN}
+
+En 2014,l'équipe de Ian Goodfellow publie dans NIPS un article intitulé \textbf{Generative Adversarial Nets}, dans lequel il décrit une nouvelle structure censée répondre au problème de génération de donnée. Cette structure est fondée sur l'entraînement simultané de deux réseaux neuronaux en compétition, respectivement nommés \textbf{Générateur} et \textbf{Discriminateur}.  
+
+% A compléter avec l'article en question
+
 \subsection{Description qualitative du fonctionnement du GAN}
+
+Pour commencer, on souhaite obtenir un réseau qui soit capable de générer sur commande des données 
+\begin{itemize}
+    \item Pertinentes par rapport aux contraintes qu'on lui impose (exemple : on souhaite pouvoir obtenir un réseau qui dessine spécifiquement des moutons, et non un réseau qui dessine n'importe quoi comme bon klui semble)
+    \item Variées, c'est à dire que les données générées sont différentes deux a deux
+    \item Réalistes, voire indiscernables de données réelles aux yeux d'un humain 
+\end{itemize}
+
+En résumé on souhaite construire un réseau (nommé dans toute la suite \textbf{Générateur}) qui modélise une projection d'un ensemble d'entrée vers l'ensemble des données réalistes et pertinentes vis-à-vis des contraintes imposées, et dont l'image ne soit pas réduite à un point de cet ensemble.
+
+Résumée de cette façon, la tâche semble extraordinairement ardue, c'est pourquoi la structure fait appel à un second réseau (nommé \textbf{Discriminateur} dans toute la suite).
 
 \section{Discriminateur et générateur}
 \subsection{Théorie des jeux et équilibre de Nash}
