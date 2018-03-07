@@ -1,0 +1,21 @@
+\chapter{Generative Adversarial Networks - Implémentation}
+
+ La structure théorique des \textbf{Generative Adversarial Networks} étant maintenant définie, nous devons implémenter ces réseaux. Pour cela, nous nous sommes lancés dans la continuité de MNIST, avec la génération de chiffres manuscrits par le \textbf{Générateur}, qui doit alors convaincre le \textbf{Discriminateur}. Ce cas de figure est idéal pour une première implémentation des GAN, puisque nous restons avec des données relativement simple (Dimension 28*28, en niveau de gris), avec un format normalisé et une importante base de données à disposition (La base de données MNIST : 60000 images d'apprentissages, 10000 données de test).
+
+Le \textbf{Discriminateur} s'entraine donc à reconnaître les chiffres provenant de la base de données de MNIST en les différenciant des chiffres factices créés par le \textbf{Générateur}. Dans un premier temps, nous travaillons sur des chiffres uniques, en apprenant au Discriminateur à reconnaitre uniquement de 3 par exemple.
+
+Nous verrons dans ce chapitre tout d'abord l'implémentation de notre GAN, puis les premiers résultats obtenus. Ces résultats nous ont confronté à divers problèmes, que nous aborderons alors avec les différentes solutions envisagées.
+
+
+\section{Implémentation des \textit{Generative Adversarial Networks}}
+\subsection{Présentation de la structure}
+\subsection{Ratio d'apprentissage}
+
+\section{Premiers résultats}
+
+\section{Difficultés rencontrées et solutions émises}
+\subsection{Collapse du \textit{Generateur} vers un unique point}
+\paragraph{Présentation du problème}
+\paragraph{Solution envisagée : Retrait du biais dans les réseaux (non fructueuse)}
+\paragraph{Solution envisagée : Injection de bruit dans chaque couche du Générateur (fructueuse)}
+
