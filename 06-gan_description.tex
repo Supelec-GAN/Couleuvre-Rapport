@@ -31,6 +31,18 @@ Cependant, nous avons vus avec les perceptrons et la base de données MNIST qu'i
 
 \subsection{Des réseaux en compétition}
 
+Le GAN va donc faire intervenir deux réseaux, dont l'un sert seulement à rendre possible l'apprentissage de l'autre. Le \textbf{Discriminateur} a pour unique rôle de modéliser le critère que l'on souhaite utiliser; son apprentissage se fait donc de la même manière que tout ce qui a été fait jusqu'ici, en apprentissage supervisé. C'est un réseau dont l'entrée est de la dimension des données que l'on souhaite construire, et dont la sortie est un réel entre 0 et 1, caractérisant la certitude du réseau que l'entrée qui lui été donnée est une donnée réelle ou non. Plus précisément, pour une entrée donnée, plus la sortie est proche de 1, plus le \textbf{Discriminateur} est convaincu que l'entrée est une donnée réelle, et non de synthèse. Son objectif est donc de sortir 1 pour toute entrée réelle, et 0 pour toute donnée de sythèse.
+
+Le \textbf{Générateur} de son côté est le réseau qui doit générer des données synthétiques suffisamment convaincantes pour que le \textbf{Discriminateur} ne puisse les différencier des données réelles. Sa sortie est donc naturellement de la dimension des données qu'on souhaite construire. L'entrée du \textbf{Générateur} est un bruit (blanc) à partir duquel le réseau doit construire une donnée convaincante. Le \textbf{Générateur} est donc un réseau qui réalise une projection de l'ensemble d'entrée vers l'ensemble des données \"suffisamment convaincantes pour tromper un humain\". Passer un bruit en entrée permet d'obtenir des sorties variées. On comprend cependant que, le réseau réalisant un calcul déterministe, la dimension de la sorties est nécessairement inférieure à la dimension de l'entrée. Pour être certain d'obtenir un ensemble de sortie aussi grand que possible, on s'assurera toujours d'avoir un ensemble d'entrée de dimension suffisamment grande. \\
+
+\begin{example} Cas des images de mouton
+
+On souhaite obtenir un réseau qui génère des images $28 \times 28$ de moutons, suffisamment réalistes pour ne pouvoir être distinguées de réelles photos de moutons. On souhaite également observer de la variation dans cesimages (avoir plein de moutons différents). 
+
+L'ensemble de sortie du \textbf{Générateur} est donc un ensemble inclu dans l'ensemble des images $28 \times 28$ et qui contient toutes les images que le \textbf{Générateur} considère comme étant des moutons réalistes. Pour être certain que l'ensemble d'entrée soit de dimension au moins aussi importante que l'ensemble de sortie, on mettra en entrée du réseau un bruit blanc de dimension $28 \times 28$. On est certain de cette façon que la taille de l'ensemble d'entrée n'impose pas de restriction sur les sorties. 
+
+\end{example}
+
 \section{Discriminateur et générateur}
 \subsection{Théorie des jeux et équilibre de Nash}
 \subsubsection{$D(G(z)) = D(x) = \frac{1}{2}$ : un premier critère d'optimalité}
