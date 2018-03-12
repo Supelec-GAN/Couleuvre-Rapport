@@ -16,6 +16,27 @@ Nous verrons dans ce chapitre tout d'abord l'implémentation de notre GAN, puis 
 \section{Difficultés rencontrées et solutions émises}
 \subsection{Collapse du \textit{Generateur} vers un unique point}
 \paragraph{Présentation du problème}
+
+Un problème récurrent que l'on peut observer dans les GAN est le \textit{mode collapse}, ou \textit{missing modes}. Prenons un GAN, le générateur doit tenter de créer des images les plus réalistes possible par rapport à une distribution de données réelles, par l'intermédiaire du discriminateur. Cette distribution peut présenter plusieurs modes, plusieurs zones en quelque sorte (En reprenant l'exemple des chiffres de MNIST, on peut vouloir générer des 3, ou des 4). 
+Cependant, on observe que le générateur a souvent tendance à apprendre à ne générer qu'un seul mode. On appelle cela le mode collapse : le générateur apprendra à aller vers une des zones de la distribution voulue, se rendra compte que cette zone marche, et y restera. 
+Sur l'exemple simplifié ci-dessous, la distribution d'origine présente 4 zones, et le GAN n'en couvre qu'une seule. 
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{images/missing_modes.png}\caption{Missing modes : les points répresentent les éléments de la distribution de donnéees réelles. En bleu l'ensemble de sortie du GAN appartenant à la distribution réelle, et en rouge les zones de la distribution initiale non couverte par le GAN.}
+\end{center}
+\end{figure} 
+
+Ce phénomène récurrent est observable à différents degrés : on peut avoir des collapses partiels, les données générées seront donc variables mais toute la distribution ne sera pas représentée par le générateur, ou des collapses totaux, où le générateur ne sera qu'une projection vers un point. Les données générées seront alors très proches les unes des autres.
+Nous avons été confrontés à ce problème de collapse total en générant des chiffres à partir de la base de données MNIST. Comme montré ci-dessous, en essayant de générer des 3, nous obtenons pour un réseau donné, des images générées qui sont toutes très proches, avec la même forme de 3, les mêmes pixels singuliers.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1\textwidth]{images/missing_modes_2.png}\caption{Missing modes : On obtient pour un même réseau, 3 échantillons générés qui sont sensiblement les mêmes.}
+\end{center}
+\end{figure}
+
+
 \paragraph{Solution envisagée : Retrait du biais dans les réseaux (non fructueuse)}
 \paragraph{Solution envisagée : Injection de bruit dans chaque couche du Générateur (fructueuse)}
 
