@@ -14,8 +14,8 @@ Nous verrons dans ce chapitre tout d'abord l'implémentation de notre GAN, puis 
 \section{Premiers résultats}
 
 \section{Difficultés rencontrées et solutions émises}
-\subsection{Collapse du \textit{Generateur} vers un unique point}
-\paragraph{Présentation du problème}
+\subsection{Mode Collapse du \textit{Generateur} vers un unique point}
+\subsubsection{Présentation du problème}
 
 Un problème récurrent que l'on peut observer dans les GAN est le \textit{mode collapse}, ou \textit{missing modes}. Prenons un GAN, le générateur doit tenter de créer des images les plus réalistes possible par rapport à une distribution de données réelles, par l'intermédiaire du discriminateur. Cette distribution peut présenter plusieurs modes, plusieurs zones en quelque sorte (En reprenant l'exemple des chiffres de MNIST, on peut vouloir générer des 3, ou des 4). 
 Cependant, on observe que le générateur a souvent tendance à apprendre à ne générer qu'un seul mode. On appelle cela le mode collapse : le générateur apprendra à aller vers une des zones de la distribution voulue, se rendra compte que cette zone marche, et y restera. 
@@ -37,6 +37,21 @@ Nous avons été confrontés à ce problème de collapse total en générant des
 \end{figure}
 
 
-\paragraph{Solution envisagée : Retrait du biais dans les réseaux (non fructueuse)}
-\paragraph{Solution envisagée : Injection de bruit dans chaque couche du Générateur (fructueuse)}
+\subsubsection{Solution envisagée : Retrait du biais dans les réseaux (non fructueuse)}
+
+Une première hypothèse concernant ce problème de Mode Collapse était la suivante : l'unique image produite par le générateur n'était en réalité qu'une image du masque de biais qui figeait l'image, par exemple en plaçant certains biais trop haut ou trop bas, annulant les entrées bruitées en début de réseau. On aurait alors une image déterminée uniquement par les biais, ce qui expliquerait un collapse vers une unique image.
+De plus, en observant précisément le masque de biais sous forme matricielle, on remarque que ses poids forment effectivement l'image d'un nombre, comme on peut le voir ci-dessous :
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{images/masqueBiais.png}\caption{Masque du biais : on peut observer que le biais forme lui même les bases d'une image, un 3 ici.}
+\end{center}
+\end{figure}
+
+On peut vérifier cette supposition en supprimant les biais de nos réseaux de neurones. On aurait alors plus de valeurs constantes qui figeraient l'image. Cependant, en implémentant ces réseaux, on n'observe qu'un ralentissement de l'apprentissage vers un état de Collapse similaire : les résultats sont moins intéressants (chiffres moins beaux), l'apprentissage est plus lent, et on converge toujours vers un Mode Collapse.
+
+La suppression du biais ne permet donc pas de résoudre ce problème, c'est bien la fonction de transfert globale du réseau de neurones qui converge vers cet unique point.  
+
+
+\subsubsection{Solution envisagée : Injection de bruit dans chaque couche du Générateur (fructueuse)}
 
