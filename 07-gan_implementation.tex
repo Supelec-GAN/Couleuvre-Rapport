@@ -64,8 +64,12 @@ On pourrait envisager de créer une échelle d'évaluateurs, constituée de plus
 \subsubsection{Présentation du problème}
 
 Un problème récurrent que l'on peut observer dans les GAN est le \textit{mode collapse}, ou \textit{missing modes}. Prenons un GAN, le générateur doit tenter de créer des images les plus réalistes possible par rapport à une distribution de données réelles, par l'intermédiaire du discriminateur. Cette distribution peut présenter plusieurs modes, plusieurs zones en quelque sorte (En reprenant l'exemple des chiffres de MNIST, on peut vouloir générer des 3, ou des 4). 
+\\ \\
 Cependant, on observe que le générateur a souvent tendance à apprendre à ne générer qu'un seul mode. On appelle cela le mode collapse : le générateur apprendra à aller vers une des zones de la distribution voulue, se rendra compte que cette zone marche, et y restera. 
-Sur l'exemple simplifié ci-dessous, la distribution d'origine présente 4 zones, et le GAN n'en couvre qu'une seule. 
+Sur l'exemple simplifié ci-dessous, la distribution d'origine présente 4 zones, et le GAN n'en couvre qu'une seule.
+Le discriminateur apprendra alors à se méfier de cette zone, puisque, même si elle est très proche de la distribution d'origine, il apprend au fur et à mesure à reconnaitre les images du générateur. Ainsi, cette zone est peu à peu considérée comme artificielle pour le discriminateur, et le générateur va collapse sur une autre zone considérée comme valide. On aura alors un jeu de rebonds, le générateur collapse sur des zones qui seront alors désapprouvées par le discriminateur, et se déplacera vers une autre zone. 
+On a donc un cercle qui fera que le générateur sera et restera dans un état de collapse. 
+Il faut alors trouver des méthodes pour empêcher le générateur de ne générer qu'une distribution très restreinte (un mode).
 
 \begin{figure}[h]
 \begin{center}
