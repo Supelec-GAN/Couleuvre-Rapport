@@ -27,7 +27,13 @@ Ce protocole est \textbf{fondamental} en recherche expérimentale, et il est \te
 
 \subsubsection{Les données à disposition pour mesurer les performances}
 
+Afin de bien cerner le problème, résumons ce que nous avons à disposition à la fin d'une expérience. Si dans certains cas nous avons fait des essais nous permettant de mesurer d'autres grandeurs que les suivantes (comme la valeur des poids etc), seules les deux ci-après sont accessibles systématiquement, pour chaque expérience.
+Nous disposons donc de :
 
+\begin{itemize}
+  \item Un ensemble d'images de synthèse générées à différents instants d'apprentissage; par exemple nous pouvons demander à produire 100 images tous les 10 apprentissages, ce qui permet de suivre assez finement l'évolution du GAN au fur et à mesure de son apprentissage
+  \item Les courbes de score des deux réseaux, générées à la fin de l'expérience. La courbe de score d'un réseau représente la proportion d'erreurs dans toutes les réponses qu'il donne. Ainsi la courbe de score du discriminateur compte le nombre de bonnes réponses du réseau à des entrées aussi bien de synthèse (réponse attendue : 0) que réelles (réponse attendue : 1); la courbe du générateur est calculée en fonction des réponses du discriminateur aux images de synthèse. Ces courbes sont graduées en abscisse par rapport à nombre d'apprentissages effectués.
+\end{itemize}
 
 \subsubsection{Évaluation par réseau(x) tiers}
 
