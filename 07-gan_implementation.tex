@@ -14,6 +14,29 @@ Nous verrons dans ce chapitre tout d'abord l'implémentation de notre GAN, puis 
 \section{Premiers résultats}
 
 \section{Difficultés rencontrées et solutions émises}
+
+Au cours du développement des GANs, nous avons été confrontés à de très nombreuses difficultés, que nous avons tenté de répertorier avec les solutions envisagées. À l'heure actuelle, certains problèmes sont toujours sans solution probante et restent des domaines de recherches ouverts : c'est le cas en particulier du \textbf{mode collapse} que nous détaillons ci-après.
+
+\subsection{Le problème d'évaluation des performances}
+
+Le premier et plus grand problème que nous avons rencontré est \textbf{l'absence de méthode systématique d'évaluation des performances d'un réseau donné.}
+
+En effet, pour qu'un protocol expérimental puisse être mené à bien, il faut comparer un résultat témoin avec les résultats pour lesquels des paramètres ont varié, et déduire de la différence des performances si le paramètre testé est signifiant, et dans quelle mesure.
+
+Ce protocole est \textbf{fondamental} en recherche expérimentale, et il est \textbf{inapplicable} ici. En effet, nous n'avons trouvé aucun moyen de mesurer la qualité d'une image, à l'exception de la mesure à l'oeil par les membres de l'équipe (ce qui ne peut être qualifié de méthode rigoureuse et systématique d'évaluation). 
+
+\subsubsection{Les données à disposition pour mesurer les performances}
+
+
+
+\subsubsection{Évaluation par réseau(x) tiers}
+
+Une première idée pour l'évaluation, serait de passer les images de synthèses dans un 3ème réseau (appelons le évaluateur, mais il se comporte exactement comme le discriminateur) qui aurait appris à part, en dehors de la structure de GAN et qui serait un juge objectif sur les résultats du GAN. Ce réseau aurait été entraîné sur les données réelles, et resterait immuable une fois son apprentissage terminé. 
+
+Cette méthode est en pratique inapplicable (et inappliquée, pour ce que nous en savons), notamment à cause de la difficulté à équilibrer ce 3ème réseau avec les deux autres; équilibrer un GAN est déjà une tâche particulièrement ardue (nous y reviendrons), ajouter cet évaluateur la rend insurmontable. Car si l'évaluateur est très performant, il risque de donner une performance nulle à tous les générateurs qu'il testera; à l'inverse si on l'a délibérément fait peu apprendre, il ne permettra pas de discriminer efficacement les générateurs qu'il testera.
+
+On pourrait envisager de créer une échelle d'évaluateurs, constituée de plusieurs évaluateurs ayant chacun arrêté leur apprentissage à un moment différent, afin de pouvoir graduer les résultats obtenus par les générateurs sur une échelle de performance. Nous n'avons pas nous même implémenté cette technique et n'avons pas trouvé d'articles faisant mention de l'application de cette méthode, mais elle a au moins l'avantage majeur d'être rigoureuse, systématique et indépendante du jugement humain.
+
 \subsection{Mode Collapse du \textit{Generateur} vers un unique point}
 \subsubsection{Présentation du problème}
 
@@ -54,4 +77,3 @@ La suppression du biais ne permet donc pas de résoudre ce problème, c'est bien
 
 
 \subsubsection{Solution envisagée : Injection de bruit dans chaque couche du Générateur (fructueuse)}
-
