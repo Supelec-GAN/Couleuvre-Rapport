@@ -104,3 +104,15 @@ La suppression du biais ne permet donc pas de résoudre ce problème, c'est bien
 
 
 \subsubsection{Solution envisagée : Injection de bruit dans chaque couche du Générateur (fructueuse)}
+
+Une solution est proposée par Ian Goodfellow dans son article dans NIPS 2016 intitulé \textbf{Tutorial : Generative Adversarial Networks}. La structure du générateur est assez libre dans l'architecture des GAN, ainsi, on peut placer des entrées (du bruit) au début du réseau, mais aussi sur n'importe quelle couche de celui-ci notamment, sans réellement compromettre les performances. En effet, injecter des entrées de bruit dans des couches intermédiaires revient à faire des entrées classiques qui traverseront moins de couches de neurones. Cependant, le bruit au niveau de la dernière couche semble perturber le réseau et l'empêche de tomber dans un mode collapse. 
+
+Cela peut s'expliquer par le fait que les entrées bruitées perturbent la dernière couche du réseau, l'empêchant de se stabiliser sur une unique sortie trompant le discriminateur. Cette perturbation va forcer le générateur à diversifier ses sorties.
+Une autre hypothèse serait que la dernière couche ne peut pas différencier les entrées provenant des couches antérieures des entrées de bruit si celles-ci sont suffisamment nombreuses. Ainsi, il sera obligé de toutes les prendre en compte (il ne peut pas juste annuler les poids correspondant) ce qui générera de la variabilité dans la sortie, puisqu'une partie non négligeable des entrées n'est que du bruit.
+
+Cependant on peut observer dans des réseaux bruités, pour un même nombre d'apprentissages, des patterns généraux dans chaque image, ce qui nous montre un mode collapse partiel mais très léger comparé au précédent. De tels réseaux ont de plus besoin de beaucoup plus d'apprentissages pour donner des résultats convainquants. Cette solution nous permet donc de limiter partiellement ce problème de mode collapse.
+
+%% Images de chiffres générés par des réseaux bruités à rajouter
+
+
+
