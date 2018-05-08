@@ -35,6 +35,23 @@ Nous disposons donc de :
   \item Les courbes de score des deux réseaux, générées à la fin de l'expérience. La courbe de score d'un réseau représente la proportion d'erreurs dans toutes les réponses qu'il donne. Ainsi la courbe de score du discriminateur compte le nombre de bonnes réponses du réseau à des entrées aussi bien de synthèse (réponse attendue : 0) que réelles (réponse attendue : 1); la courbe du générateur est calculée en fonction des réponses du discriminateur aux images de synthèse. Ces courbes sont graduées en abscisse par rapport à nombre d'apprentissages effectués.
 \end{itemize}
 
+\paragraph{Sur l'utilisation des courbes de score}
+
+À première vue, ces courbes paraissent être un indicateur pertinent de la qualité des réseaux. Elles permettent \textbf{en théorie} :
+\begin{itemize}
+  \item d'observer l'équilibre de Nash (qui, en pratique, n'a jamais été observé)
+  \item d'observer les déséquilibres entre les deux réseaux afin d'affiner les paramètre d'équilibre sur les expériences suivantes
+  \item de comparer les images produites avec les scores des réseaux au moment de la génération de l'image
+\end{itemize}
+
+En pratique, nous n'avons jamais réussi à interpréter efficacement ces courbes. Leur étude représente une perte pure de temps, temps qui aurait dû être alloué à la recherche d'une méthode d'évaluation efficace. Les courbes paraissent extrêmement instables, on peut observer des formes récurrentes mais très difficiles à expliquer (chute brutale de l'une des deux malgré une bonne qualité d'image, etc), et par dessus tout nous n'avons pas réussi à mettre en lumière des corrélations entre les paramètres choisis et les courbes résultantes.
+
+Enfin, nous avons été incapables de trouver des corrélations pertinentes entre la qualité des images et les courbes de score. Nous avons au mieux été capables de trouver des explications à posteriori sur les liens qui peuvent exister; c'est à dire que nous n'avons jamais pu prévoir (de manière reproductible et indépendante du hasard) la qualité des images à partir de la seule analyse des courbes.
+
+\paragraph{Sur l'analyse des échantillons d'images}
+
+Deux problèmes principaux s'opposent à l'analyse % pas fini
+
 \subsubsection{Évaluation par réseau(x) tiers}
 
 Une première idée pour l'évaluation, serait de passer les images de synthèses dans un 3ème réseau (appelons le évaluateur, mais il se comporte exactement comme le discriminateur) qui aurait appris à part, en dehors de la structure de GAN et qui serait un juge objectif sur les résultats du GAN. Ce réseau aurait été entraîné sur les données réelles, et resterait immuable une fois son apprentissage terminé. 
