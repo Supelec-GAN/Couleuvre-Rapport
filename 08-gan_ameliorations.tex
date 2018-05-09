@@ -1,10 +1,24 @@
 \chapter{Generative Adversarial Networks - Améliorations}
 
 
-\section{Apprentissage par Mini-batch}
+\section{Apprentissage par Mini-Batch}
+\subsection{Principe}
+L'apprentissage par Batch consiste à apprendre sur l'ensemble du batch d'apprentissage avant de mettre à jour chaque réseau, et de réitérer l'apprentissage à chaque itération sur l'ensemble du batch d'apprentissage.
+
+On calcule successivement la rétropropagation pour chaque image, on somme l'erreur sur l'ensemble des images et on applique la mise à jour du réseau avec la somme des erreurs. On obtient donc une moyenne des directions de propagation afin d'effectuer la mise à jour.
+
+Certaines bases d'apprentissage étant très grandes - soixante mille avec MNIST par exemple -, on va préférer à l'apprentissage par batch, l'apprentissage par Mini-batch. 
+On sélectionne aléatoirement parmi la base d'apprentissage un nombre 
+\subsection{Implémentation}
+Dans le cas de MNIST, les chiffres du début de la bdd étant plus simple, nous avons effectué afin d'obtenir de meilleurs résultats une sélaction aléatoire sur uniquement une première partie des 60000 images (cf argument 
+\subsection{Résultats}
+Notre équipe a obtenu des résultats 
+cf présentation du 22-02-18
+
+\section{Pas adaptatif}
+\subsection{RMSprop}
 
 \section{Réseaux à convolution}
 
-\section{Pas adaptatif}
 
 
