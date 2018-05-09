@@ -10,10 +10,16 @@ On calcule successivement la rétropropagation pour chaque image, on somme l'err
 Certaines bases d'apprentissage étant très grandes - soixante mille avec MNIST par exemple -, on va préférer à l'apprentissage par batch, l'apprentissage par Mini-batch. 
 On sélectionne aléatoirement parmi la base d'apprentissage un nombre 
 \subsection{Implémentation}
-Dans le cas de MNIST, les chiffres du début de la bdd étant plus simple, nous avons effectué afin d'obtenir de meilleurs résultats une sélaction aléatoire sur uniquement une première partie des 60000 images (cf argument 
+Dans le cas de MNIST, les chiffres du début de la bdd étant plus simple, nous avons afin d'obtenir de meilleurs résultats parfois effectué une sélection aléatoire sur uniquement une première partie des 60000 images d'apprentissage (cf argument \textit{labelTrainSize}) et des 10000 images de tests (cf argument \textit{labelTestSize}.
 \subsection{Résultats}
-Notre équipe a obtenu des résultats 
-cf présentation du 22-02-18
+Notre équipe a obtenu des résultats peu convaincants, et très différents des résultats du groupe Salamandre 
+
+
+\includegraphics[width=0.5\textwidth]{images/08-gan_ameliorations_resultats_1.jpg}
+
+
+cf présentation du 15-02-18
+
 
 \section{Pas adaptatif}
 \subsection{RMSprop}
