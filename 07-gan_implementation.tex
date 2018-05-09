@@ -2,14 +2,15 @@
 
  La structure théorique des \textbf{Generative Adversarial Networks} étant maintenant définie, nous devons implémenter ces réseaux. Pour cela, nous nous sommes lancés dans la continuité de MNIST, avec la génération de chiffres manuscrits par le \textbf{Générateur}, qui doit alors convaincre le \textbf{Discriminateur}. Ce cas de figure est idéal pour une première implémentation des GAN, puisque nous restons avec des données relativement simple (Dimension 28*28, en niveau de gris), avec un format normalisé et une importante base de données à disposition (La base de données MNIST : 60000 images d'apprentissages, 10000 données de test).
 
-Le \textbf{Discriminateur} s'entraine donc à reconnaître les chiffres provenant de la base de données de MNIST en les différenciant des chiffres factices créés par le \textbf{Générateur}. Dans un premier temps, nous travaillons sur des chiffres uniques, en apprenant au Discriminateur à reconnaitre uniquement de 3 par exemple.
+Le \textbf{Discriminateur} s’entraîne donc à reconnaître les chiffres provenant de la base de données de MNIST en les différenciant des chiffres factices créés par le \textbf{Générateur}. Dans un premier temps, nous travaillons sur des chiffres uniques, en apprenant au Discriminateur à reconnaître uniquement de 3 par exemple.
 
 Nous verrons dans ce chapitre tout d'abord l'implémentation de notre GAN, puis les premiers résultats obtenus. Ces résultats nous ont confronté à divers problèmes, que nous aborderons alors avec les différentes solutions envisagées.
 
 
 \section{Implémentation des \textit{Generative Adversarial Networks}}
 \subsection{Présentation de la structure}
-\subsection{Ratio d'apprentissage}
+\subsection{Ratio d'apprentissage - Influence}
+\subsection{Taille des réseaux - Influence}
 
 \section{Premiers résultats}
 
@@ -21,9 +22,9 @@ Au cours du développement des GANs, nous avons été confrontés à de très no
 
 Le premier et plus grand problème que nous avons rencontré est \textbf{l'absence de méthode systématique d'évaluation des performances d'un réseau donné.}
 
-En effet, pour qu'un protocol expérimental puisse être mené à bien, il faut comparer un résultat témoin avec les résultats pour lesquels des paramètres ont varié, et déduire de la différence des performances si le paramètre testé est signifiant, et dans quelle mesure.
+En effet, pour qu'un protocole expérimental puisse être mené à bien, il faut comparer un résultat témoin avec les résultats pour lesquels des paramètres ont varié, et déduire de la différence des performances si le paramètre testé est signifiant, et dans quelle mesure.
 
-Ce protocole est \textbf{fondamental} en recherche expérimentale, et il est \textbf{inapplicable} ici. En effet, nous n'avons trouvé aucun moyen de mesurer la qualité d'une image, à l'exception de la mesure à l'oeil par les membres de l'équipe (ce qui ne peut être qualifié de méthode rigoureuse et systématique d'évaluation). 
+Ce protocole est \textbf{fondamental} en recherche expérimentale, et il est \textbf{inapplicable} ici. En effet, nous n'avons trouvé aucun moyen de mesurer la qualité d'une image, à l'exception de la mesure à l’œil par les membres de l'équipe (ce qui ne peut être qualifié de méthode rigoureuse et systématique d'évaluation). 
 
 \subsubsection{Les données à disposition pour mesurer les performances}
 
@@ -54,26 +55,26 @@ Deux problèmes principaux s'opposent à l'analyse % pas fini
 
 \subsubsection{Évaluation par réseau(x) tiers}
 
-Une première idée pour l'évaluation, serait de passer les images de synthèses dans un 3ème réseau (appelons le évaluateur, mais il se comporte exactement comme le discriminateur) qui aurait appris à part, en dehors de la structure de GAN et qui serait un juge objectif sur les résultats du GAN. Ce réseau aurait été entraîné sur les données réelles, et resterait immuable une fois son apprentissage terminé. 
+Une première idée pour l'évaluation, serait de passer les images de synthèses dans un 3\textsuperscript{ème} réseau (appelons le évaluateur, mais il se comporte exactement comme le discriminateur) qui aurait appris à part, en dehors de la structure de GAN et qui serait un juge objectif sur les résultats du GAN. Ce réseau aurait été entraîné sur les données réelles, et resterait immuable une fois son apprentissage terminé. 
 
-Cette méthode est en pratique inapplicable (et inappliquée, pour ce que nous en savons), notamment à cause de la difficulté à équilibrer ce 3ème réseau avec les deux autres; équilibrer un GAN est déjà une tâche particulièrement ardue (nous y reviendrons), ajouter cet évaluateur la rend insurmontable. Car si l'évaluateur est très performant, il risque de donner une performance nulle à tous les générateurs qu'il testera; à l'inverse si on l'a délibérément fait peu apprendre, il ne permettra pas de discriminer efficacement les générateurs qu'il testera.
+Cette méthode est en pratique inapplicable (et inappliquée, pour ce que nous en savons), notamment à cause de la difficulté à équilibrer ce 3\textsuperscript{ème} réseau avec les deux autres; équilibrer un GAN est déjà une tâche particulièrement ardue (nous y reviendrons), ajouter cet évaluateur la rend insurmontable. Car si l'évaluateur est très performant, il risque de donner une performance nulle à tous les générateurs qu'il testera; à l'inverse si on l'a délibérément fait peu apprendre, il ne permettra pas de discriminer efficacement les générateurs qu'il testera.
 
 On pourrait envisager de créer une échelle d'évaluateurs, constituée de plusieurs évaluateurs ayant chacun arrêté leur apprentissage à un moment différent, afin de pouvoir graduer les résultats obtenus par les générateurs sur une échelle de performance. Nous n'avons pas nous même implémenté cette technique et n'avons pas trouvé d'articles faisant mention de l'application de cette méthode, mais elle a au moins l'avantage majeur d'être rigoureuse, systématique et indépendante du jugement humain.
 
-\subsection{Mode Collapse du \textit{Generateur} vers un unique point}
+\subsection{Mode Collapse du \textit{Générateur} vers un unique point}
 \subsubsection{Présentation du problème}
 
 Un problème récurrent que l'on peut observer dans les GAN est le \textit{mode collapse}, ou \textit{missing modes}. Prenons un GAN, le générateur doit tenter de créer des images les plus réalistes possible par rapport à une distribution de données réelles, par l'intermédiaire du discriminateur. Cette distribution peut présenter plusieurs modes, plusieurs zones en quelque sorte (En reprenant l'exemple des chiffres de MNIST, on peut vouloir générer des 3, ou des 4). 
 \\ \\
 Cependant, on observe que le générateur a souvent tendance à apprendre à ne générer qu'un seul mode. On appelle cela le mode collapse : le générateur apprendra à aller vers une des zones de la distribution voulue, se rendra compte que cette zone marche, et y restera. 
 Sur l'exemple simplifié ci-dessous, la distribution d'origine présente 4 zones, et le GAN n'en couvre qu'une seule.
-Le discriminateur apprendra alors à se méfier de cette zone, puisque, même si elle est très proche de la distribution d'origine, il apprend au fur et à mesure à reconnaitre les images du générateur. Ainsi, cette zone est peu à peu considérée comme artificielle pour le discriminateur, et le générateur va collapse sur une autre zone considérée comme valide. On aura alors un jeu de rebonds, le générateur collapse sur des zones qui seront alors désapprouvées par le discriminateur, et se déplacera vers une autre zone. 
+Le discriminateur apprendra alors à se méfier de cette zone, puisque, même si elle est très proche de la distribution d'origine, il apprend au fur et à mesure à reconnaître les images du générateur. Ainsi, cette zone est peu à peu considérée comme artificielle pour le discriminateur, et le générateur va collapse sur une autre zone considérée comme valide. On aura alors un jeu de rebonds, le générateur collapse sur des zones qui seront alors désapprouvées par le discriminateur, et se déplacera vers une autre zone. 
 On a donc un cercle qui fera que le générateur sera et restera dans un état de collapse. 
 Il faut alors trouver des méthodes pour empêcher le générateur de ne générer qu'une distribution très restreinte (un mode).
 
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.5\textwidth]{images/missing_modes.png}\caption{Missing modes : les points répresentent les éléments de la distribution de donnéees réelles. En bleu l'ensemble de sortie du GAN appartenant à la distribution réelle, et en rouge les zones de la distribution initiale non couverte par le GAN.}
+\includegraphics[width=0.5\textwidth]{images/missing_modes.png}\caption{Missing modes : les points représentent les éléments de la distribution de données réelles. En bleu l'ensemble de sortie du GAN appartenant à la distribution réelle, et en rouge les zones de la distribution initiale non couverte par le GAN.}
 \end{center}
 \end{figure} 
 
@@ -110,7 +111,7 @@ Une solution est proposée par Ian Goodfellow dans son article dans NIPS 2016 in
 Cela peut s'expliquer par le fait que les entrées bruitées perturbent la dernière couche du réseau, l'empêchant de se stabiliser sur une unique sortie trompant le discriminateur. Cette perturbation va forcer le générateur à diversifier ses sorties.
 Une autre hypothèse serait que la dernière couche ne peut pas différencier les entrées provenant des couches antérieures des entrées de bruit si celles-ci sont suffisamment nombreuses. Ainsi, il sera obligé de toutes les prendre en compte (il ne peut pas juste annuler les poids correspondant) ce qui générera de la variabilité dans la sortie, puisqu'une partie non négligeable des entrées n'est que du bruit.
 
-Cependant on peut observer dans des réseaux bruités, pour un même nombre d'apprentissages, des patterns généraux dans chaque image, ce qui nous montre un mode collapse partiel mais très léger comparé au précédent. De tels réseaux ont de plus besoin de beaucoup plus d'apprentissages pour donner des résultats convainquants. Cette solution nous permet donc de limiter partiellement ce problème de mode collapse.
+Cependant on peut observer dans des réseaux bruités, pour un même nombre d'apprentissages, des patterns généraux dans chaque image, ce qui nous montre un mode collapse partiel mais très léger comparé au précédent. De tels réseaux ont de plus besoin de beaucoup plus d'apprentissages pour donner des résultats convaincants. Cette solution nous permet donc de limiter partiellement ce problème de mode collapse.
 
 %% Images de chiffres générés par des réseaux bruités à rajouter
 

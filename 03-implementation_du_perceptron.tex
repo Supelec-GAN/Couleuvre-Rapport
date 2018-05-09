@@ -9,7 +9,7 @@ Ce chapitre décrit l'implémentation de nos réseaux de neurones sous forme de 
 Comme décrit dans la partie théorique sur les perceptrons (1.5), nous avons choisi de représenter nos réseaux de neurones sous forme matricielle. Les neurones ne seront donc pas représentés individuellement, mais par couche de neurones (neuronLayer). Cela permet d'effectuer les calculs sous forme matricielle par rapport à des propagations et rétro-propagations neurone par neurone, ce qui fait gagner beaucoup de temps de calcul.
 Cela est possible en gardant les mêmes fonctions d'activation pour chaque neurone d'une même couche, ainsi que les mêmes entrées et sorties. Dans le cadre du perceptron, cela convient.
 
-Le diagramme UML comporte une classe principale, Application, qui va gérer les expériences et réseaux de neurones. Cette classe contient un réseau de neurones (NeuralNetwork) composé de plusieurs couches de neurones (NeuronLayer). Application possède aussi un collecteur qui est utilisé pour récupérer les données des expériences, les traiter et les exporter dans un fichier .csv. Enfin, la classe Teacher a pour rôle de gérer la rétropropagation et l'apprentissage du réseau de neurones.
+Le diagramme UML comporte une classe principale, Application, qui va gérer les expériences et réseaux de neurones. Cette classe contient un réseau de neurones (NeuralNetwork) composé de plusieurs couches de neurones (NeuronLayer). Application possède aussi un collecteur qui est utilisé pour récupérer les données des expériences, les traiter et les exporter dans un fichier .csv. Enfin, la classe Teacher a pour rôle de gérer la rétro-propagation et l'apprentissage du réseau de neurones.
 
 \newpage
 
@@ -34,18 +34,18 @@ Pour représenter cet objet, nous avons utilisé la structure de liste simplemen
 
 \subsection{DataCollector}
 
-Afin de collecter les données du réseau et de pouvoir effectuer un traitement statistique dessus (calcul de moyenne, ecart-type, intervalle de confiance...) nous avons écrit la classe \textbf{DataCollector}. Elle se charge de récupérer les sorties du réseau, d'effectuer des calculs statistiques standards et de les exporter au format \textbf{.csv} afin de permettre une visualisation facile de toutes les données.
+Afin de collecter les données du réseau et de pouvoir effectuer un traitement statistique dessus (calcul de moyenne, écart-type, intervalle de confiance...) nous avons écrit la classe \textbf{DataCollector}. Elle se charge de récupérer les sorties du réseau, d'effectuer des calculs statistiques standards et de les exporter au format \textbf{.csv} afin de permettre une visualisation facile de toutes les données.
 
-\section{Etude du XOR}
+\section{Étude du XOR}
 
 Le problème du XOR est un problème de classification standard, auquel toutes les méthodes de classification sont confrontées. Nous avons donc naturellement commencé par le traitement de ce problème pour nous exercer à la manipulation des perceptrons.
 
-\subsection{Definition du problème}
+\subsection{Définition du problème}
 
 Le problème du XOR est un problème en deux dimensions : les entrées sont des paires $(x_1,\ x_2)$ et la sortie est un booléen. Deux approches différentes existent, selon le choix du domaine de définition : 
 
 \begin{itemize}
-  \item 1\textsuperscript{er} choix : on veut obtenir un XOR purement booléen, dont les 4 entrées possibles sont les paires $(0,0)\ (0,1),\ (1,0),\ (1,1)$. Les résultats attendus sont respectivements $0,\ 1,\ 1,\ 0$.
+  \item 1\textsuperscript{er} choix : on veut obtenir un XOR purement booléen, dont les 4 entrées possibles sont les paires $(0,0)\ (0,1),\ (1,0),\ (1,1)$. Les résultats attendus sont respectivement $0,\ 1,\ 1,\ 0$.
   \item 2\textsuperscript{nd} choix : on veut obtenir un XOR défini sur le carré unité du plan : ${(x,y) \in [-1,1]^2}$. Dans ce cas, on attend du XOR qu'il renvoie $1$ lorsque $x \times y < 0$ et $0$ sinon. On fait donc un XOR sur le signe des coordonnées.
 \end{itemize}
 
@@ -66,7 +66,7 @@ Qualitativement, on peut dire que
   \item la troisième couche se charge de réaliser la fonction \"ou\" sur les résultats renvoyés par la couche 2, afin que le résultat final soit $1$ si le point se trouve dans l'un des deux quadrants correspondant au résultat $1$.
 \end{itemize}
 
-De plus, nous avons choisi d'utiliser des fonctions d'activations sigmoides en $\frac{1}{1+exp(-\lambda x}$. Une telle fonction d'activation est nécessaire pour pouvoir permettre un apprentissage par rétro-propagation (continue et dériavable), cependant elle empêche d'avoir un résultat booléen à la fin, puisque la valeur de sortie varie continument entre $0$ et $1$. Le résultat est donc une densité de probabilité. 
+De plus, nous avons choisi d'utiliser des fonctions d'activations sigmoïdes en $\frac{1}{1+exp(-\lambda x}$. Une telle fonction d'activation est nécessaire pour pouvoir permettre un apprentissage par rétro-propagation (continue et dérivable), cependant elle empêche d'avoir un résultat booléen à la fin, puisque la valeur de sortie varie continûment entre $0$ et $1$. Le résultat est donc une densité de probabilité. 
 
 Enfin, nous utilisons un pas d'apprentissage de $\eta <= 0.01$. Bien que la littérature suggère souvent le pas empirique $\eta = 0.2$, la valeur de $0.01$ est la valeur maximale que nous ayons trouvée qui permette au XOR de converger. Au delà, le réseau se bloque presque systématiquement dans un état non désiré.
 
