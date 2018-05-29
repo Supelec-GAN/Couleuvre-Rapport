@@ -25,8 +25,11 @@ Globalement, l'apprentissage s'effectue légèrement plus rapidement pour un mê
 \subsection{Principe}
 L'objectif de ces algorithmes est de paramétrer au mieux la convergence de la distribution représentée par notre réseau vers la distribution $p_data$. Le pas adaptatif n'est alors plus constant; il varie en fonction du gradient des étapes d'apprentissage précédentes, de manière plus ou moins évoluée selon les algorithmes.
 
-Deux méthodes de pas adaptatifs ont été utilisées : RMSprop et Adam. Nous en présentons ici d'autres
+L'objectif est ainsi de faire évoluer le pas en fonction des erreurs, selon diverses formules. Deux méthodes de pas adaptatifs ont été utilisées : RMSprop et Adam. Nous en présentons ici d'autres.
+
 \subsection{Adagrad}
+
+Cette première méthode de descente adaptative suit les équations suivantes :
 
 \begin{equation}
 \begin{aligned}
@@ -34,9 +37,12 @@ g_{t+1} = g_t + (\frac{\partial J}{\partial W})^2 \\
 W_{t+1} = W_t - \dfrac{\eta}{\sqrt{g_{t+1}} + \epsilon}\frac{\partial J}{\partial W}
 \end{aligned}
 \end{equation} 
-Adagrad n'a pas été implémenté en raison des piètres performances annoncées \textsuperscript{[ref nécessaire])}
+
+Adagrad n'a pas été implémenté en raison des piètres performances annoncées\textsuperscript{[ref nécessaire])}. En effet, g est strictement croissante, étant incrémenté à chaque itération de $(\frac{\partial J}{\partial W})^2$ . Les réseaux apprenant sur un grand nombre d'itération, le coefficient $g_{t}$ devient rapidement très important, et le pas en $\dfrac{1}{\sqrt{g_{t+1}}}$ devient rapidement négligeable. Les performances de cet algorithme sont donc assez faibles.
 
 \subsection{RMSprop}
+
+La RMSProp permet de résoudre ce problème. En effet, on a un décroissance exponentielle de l'influence de l'erreur dans le temps grâce au coefficient $\gamma$ . Ainsi, l'influence des anciennes valeurs de $(\frac{\partial J}{\partial W})^2$ décroit exponentiellement, les erreurs les plus récentes sont donc les plus influentes sur le pas.
 
 \begin{equation} 
 \begin{aligned}
