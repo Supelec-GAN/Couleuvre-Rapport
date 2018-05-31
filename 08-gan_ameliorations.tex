@@ -63,8 +63,24 @@ En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le dis
 
 
 
-\section{Réseaux à convolution}
+\section{Réseaux de convolution}
 
-\section{Echanges avec Giuseppe Valenzise}
-maître de conférences au laboratoire L2S de CentraleSupélec, spécialiste en Visual Quality Assessment.
+\section{Échanges avec Giuseppe Valenzise}
+Dans le domaine d'évaluation de la qualité des images, on distingue l'estimation avec référence (comparaison par rapport à une image) de l'estimation sans référence.
+Maître de conférences au laboratoire L2S de CentraleSupélec, Giuseppe Valenzise est spécialiste en évaluation de qualité d'image (\textit{Visual Quality Assessment}) sans référence.
+Les conclusions auxquelles nous avons pu aboutir au cours de l'échange étaient les mêmes que celles que nous avions pu formuler par le passé. Cela a néanmoins permis de les clarifier, et de nous confirmer l'intérêt du Wasserstein GAN. 
+\begin{itemize}
+\item L'évaluation d'une qualité d'image standard passe très souvent par l'usage de métriques (i.e. fonctions) appliquées sur les valeurs des pixels. Une métrique proposée était NIQE (\textit{Naturalness Image Quality Evaluator}), qui consiste en la recherche de statistiques gaussiennes locales avec des coefficients mscn (\textit{mean subtracted and contrast normalized}). Néanmoins, les images utilisées dans notre étude (MNIST, CIFAR) sont beaucoup plus petites que des images standard (28x28 et 32x32 au lieu de plusieurs millions de pixels par image). L'estimation des gaussiennes est fortement bruitée, les métriques ne sont donc pas efficaces.
+\item Les méthodes avancées d'évaluation de qualité d'image consistent en l'utilisation de classificateurs. On cherche à extraire des caractéristiques des images (vecteurs, symétries, ...) et on crée des classificateurs qui décident sur la base de ces caractéristiques. Le travail consiste alors à trouver les meilleures caractéristiques d'image.
+\item Dans le cas des réseaux neuronaux, la distance entre les poids du réseau constitue une des caractéristiques les plus exploitées. G. Valenzise considère que dans le cas du GAN, la fonction de coût du discriminateur devrait constituer un des meilleurs classificateurs. Or dans le cas d'un GAN classique, nous avons pu remarquer qu'elle ne suit pas toujours la qualité des images.
+\item Il nous a suggéré de réfléchir à un « réseau de classification » qui permettrait de s'affranchir de ces problèmes. Or, un tel réseau de classification existe déjà dans la littérature : Le WGAN.  
+\item Le WGAN permet d'obtenir un meilleur lien entre qualité d'image et fonction de coût du discriminateur, le classificateur \textit{fonction de coût du réseau discriminant} est amélioré, en modifiant profondément sa structure.
+\end{itemize}
+
+
+
+
+
+
+
 

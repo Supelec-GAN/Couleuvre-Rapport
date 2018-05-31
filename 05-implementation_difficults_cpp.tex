@@ -1,6 +1,6 @@
 \chapter{Implémentation en C++ et problèmes rencontrés}
 
-Ce chapitre a pour but d'aider les prochains qui souhaiteraient coder en C++ pour qu'ils ne se heurtent pas aux même ecueils que nous, et qu'ils puissent passer plus de temps sur la conception du projet plutôt que sur le debug et la recherche d'outils efficaces.
+Ce chapitre a pour but d'aider les prochains qui souhaiteraient coder en C++ pour qu'ils ne se heurtent pas aux même écueils que nous, et qu'ils puissent passer plus de temps sur la conception du projet plutôt que sur le debug et la recherche d'outils efficaces.
 
 \section{Outils utilisés}
 
@@ -29,7 +29,20 @@ De plus, la méthode de parallélisation d'Eigen reste assez obscure. Le framewo
 \paragraph{Convolution}
 Contrairement à Numpy, Eigen ne traite pas la convolution, il est nécessaire de la coder à la main. Cela nous a ralenti dans l'avancement du projet et dans l'obtention de résultats, notamment pour CIFAR qui nécessite des étapes de convolution.
 
-
+\subsection{Conseils à de futurs groupes}
+\paragraph{Language de programmation}
+Outre le fait que nous déconseillons vivement aux futurs membres de ce projet long d'utiliser un langage qui ne soit pas maîtrisé par au moins la moitié de l'équipe, nous avons proposé au corps encadrant, après un passage obligatoire par un langage de programmation afin de comprendre la structure des réseaux neuronaux, de faire passer à des framework de \textit{machine learning}, tels que PyTorch ou Keras+TensorFlow, afin de réduire les risques de problèmes de codes survenant dans l'implémentation des réseaux neuronaux plus complexes.
+\paragraph{Bonnes pratiques}
+Nous conseillons aux membres du groupe d'adopter dès le début de bonnes pratiques, afin d'éviter de produire du code pouvant larguer d'autres membres du groupe. Quelques unes sont listées ci-dessous
+\begin{itemize}
+\item Adopter une convention de syntaxe par défaut
+\item Documentation générée par Doxygen 
+\item Usage des merge/pull requests validé par autrui
+\end{itemize}
 
 \subsection{Affichage des résultats}
+Les images et courbes étaient initialement manuellement obtenues depuis des modèles de fichiers Excel.
+Afin de ne pas avoir à coder une seule ligne du language hérétique qu'est Python et son module GnuPlot, nous avons écrit un simple script bash (disponible sur le dépôt github) exploitant GnuPlot pour l'affichage des résultats. 
+
+
 
