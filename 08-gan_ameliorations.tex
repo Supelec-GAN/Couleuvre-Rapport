@@ -59,23 +59,39 @@ Adam est considéré comme plus performante que RMSprop
 L’utilisation d’Adam pour le générateur et de RMSProp pour le discriminateur (ayant
 comme but d'entraîner mieux le générateur) semble fonctionner bien. La qualité des images
 est plus variable (le générateur produit des images laides et belles).
-En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le discriminateur ne fonctionne pas. Cela corrobore les résultats présentés par d'autres \textsuperscript{[ref nécessaire : rapport appartement + autre ref]}
+En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le discriminateur ne fonctionne pas. Cela corrobore les résultats présentés par d'autres \cite{auriau_apprentissage_2017}[ref nécessaire : autre ref]
 
 
 
 \section{Réseaux de convolution}
+
+\subsection{Implémentation}
+Comme indiqué au \ref{implementation-C++-convolution}, nous avons dû coder la convolution à la main.
+Afin de mettre en place un réseau à convolution, nous avons implémenté les différentes couches nécessaires : couche à convolution, couche de \textit{zero-padding} et couche de \textit{max-pooling}.
+Néanmoins, l'implémentation en C++ du GAN à convolution ne s'est jamais comportée comme souhaitée. En effet, quel que soit le paramétrage, le réseau produit des résultats comparables à ceux obtenus avec un perceptron simple. Cela a donc eu des répercussions sur nos avancées (voir \ref{CIFAR-remarque-convolution})
+Certaines fuites de mémoires ont été présentes par moment, mais uniquement sur une ou deux des quatre machines.
+
+\subsection{Résultats}
+Un réseau de configuration 784 × 625 × 100 × 10 avec uniquement une couche à convolution donne une erreur de 10\% comme classificateur de MNIST. [Manu : développer résultats du 25 mai (voir EdL et slides)]
 
 \section{Échanges avec Giuseppe Valenzise}
 Dans le domaine d'évaluation de la qualité des images, on distingue l'estimation avec référence (comparaison par rapport à une image) de l'estimation sans référence.
 Maître de conférences au laboratoire L2S de CentraleSupélec, Giuseppe Valenzise est spécialiste en évaluation de qualité d'image (\textit{Visual Quality Assessment}) sans référence.
 Les conclusions auxquelles nous avons pu aboutir au cours de l'échange étaient les mêmes que celles que nous avions pu formuler par le passé. Cela a néanmoins permis de les clarifier, et de nous confirmer l'intérêt du Wasserstein GAN. 
 \begin{itemize}
-\item L'évaluation d'une qualité d'image standard passe très souvent par l'usage de métriques (i.e. fonctions) appliquées sur les valeurs des pixels. Une métrique proposée était NIQE (\textit{Naturalness Image Quality Evaluator}), qui consiste en la recherche de statistiques gaussiennes locales avec des coefficients mscn (\textit{mean subtracted and contrast normalized}). Néanmoins, les images utilisées dans notre étude (MNIST, CIFAR) sont beaucoup plus petites que des images standard (28x28 et 32x32 au lieu de plusieurs millions de pixels par image). L'estimation des gaussiennes est fortement bruitée, les métriques ne sont donc pas efficaces.
+\item L'évaluation d'une qualité d'image standard passe très souvent par l'usage de métriques (i.e. fonctions) appliquées sur les valeurs des pixels. Une métrique souvent proposée est NIQE (\textit{Naturalness Image Quality Evaluator}), qui consiste en la recherche de statistiques gaussiennes locales avec des coefficients mscn (\textit{mean subtracted and contrast normalized}). Néanmoins, les images utilisées dans notre étude (MNIST, CIFAR) sont beaucoup plus petites que des images standard (28x28 et 32x32 au lieu de plusieurs millions de pixels par image). L'estimation des gaussiennes est fortement bruitée, les métriques ne sont donc pas efficaces.
 \item Les méthodes avancées d'évaluation de qualité d'image consistent en l'utilisation de classificateurs. On cherche à extraire des caractéristiques des images (vecteurs, symétries, ...) et on crée des classificateurs qui décident sur la base de ces caractéristiques. Le travail consiste alors à trouver les meilleures caractéristiques d'image.
 \item Dans le cas des réseaux neuronaux, la distance entre les poids du réseau constitue une des caractéristiques les plus exploitées. G. Valenzise considère que dans le cas du GAN, la fonction de coût du discriminateur devrait constituer un des meilleurs classificateurs. Or dans le cas d'un GAN classique, nous avons pu remarquer qu'elle ne suit pas toujours la qualité des images.
 \item Il nous a suggéré de réfléchir à un « réseau de classification » qui permettrait de s'affranchir de ces problèmes. Or, un tel réseau de classification existe déjà dans la littérature : Le WGAN.  
 \item Le WGAN permet d'obtenir un meilleur lien entre qualité d'image et fonction de coût du discriminateur, le classificateur \textit{fonction de coût du réseau discriminant} est amélioré, en modifiant profondément sa structure.
 \end{itemize}
+
+\section{Pistes de recherche}
+Cette section regroupe les pistes de recherche que nous avons pu rencontrer mais qui n'ont pas été approfondie faute de temps. Certaines pistes de recherches ne bénéficient pas de papiers à leur sujet.
+\begin{itemize}
+\item Étudier l’impact du nombre d’images disponibles dans la base d’entraînement. A priori, s’il est petit, l’effet d’apprentissage « par cœur » peut apparaître. Proposé par la chef de l’équipe de TaO du LRI.
+\end{itemize}
+
 
 
 

@@ -26,7 +26,7 @@ La classe Eigen::MatrixXf ne sait pas faire du coefficient par coefficient, il f
 soit : (matrice1.array() * matrice2.array()).matrix()…
 \paragraph{Parallélisation des calculs}
 De plus, la méthode de parallélisation d'Eigen reste assez obscure. Le framework semble paralléliser les calculs en colonnes, c'est à dire qu'il calcule simultanément les colonnes de la matrices résultante d'un calcul. Autrement dit, si le résultat est une ligne, le calcul sera parallélisé, mais si c'est une colonne il ne tournera que dans un seul thread. Ceci implique de n'utiliser que des matrices lignes dans le code, bien que tous les calculs menés théoriquement soient faits avec des colonnes. Attention donc à transposer correctement.
-\paragraph{Convolution}
+\paragraph{Convolution}\label{implementation-C++-convolution}
 Contrairement à Numpy, Eigen ne traite pas la convolution, il est nécessaire de la coder à la main. Cela nous a ralenti dans l'avancement du projet et dans l'obtention de résultats, notamment pour CIFAR qui nécessite des étapes de convolution.
 
 \subsection{Conseils à de futurs groupes}
