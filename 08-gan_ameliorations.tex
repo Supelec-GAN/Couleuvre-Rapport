@@ -59,8 +59,9 @@ Adam est considéré comme plus performante que RMSprop
 L’utilisation d’Adam pour le générateur et de RMSProp pour le discriminateur (ayant
 comme but d'entraîner mieux le générateur) semble fonctionner bien. La qualité des images
 est plus variable (le générateur produit des images laides et belles).
-En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le discriminateur ne fonctionne pas. Cela corrobore les résultats présentés par d'autres \cite{auriau_apprentissage_2017}[ref nécessaire : autre ref]
-
+En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le discriminateur, ou Adam pour les deux, ne fonctionne pas. Cela corrobore les résultats présentés par d'autres \cite{auriau_apprentissage_2017}[ref nécessaire : autre ref].
+L'utilisation d'Adam pour le générateur et une gradient standard pour le discriminateur [doit être testé par Kv]
+L'interprétation est la suivante : il est nécessaire d'apprendre davantage au générateur qu'au discriminateur. Autrement, le générateur devient perdu.
 
 
 \section{Réseaux de convolution}
@@ -69,7 +70,7 @@ En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le dis
 Comme indiqué au \ref{implementation-C++-convolution}, nous avons dû coder la convolution à la main.
 Afin de mettre en place un réseau à convolution, nous avons implémenté les différentes couches nécessaires : couche à convolution, couche de \textit{zero-padding} et couche de \textit{max-pooling}.
 Néanmoins, l'implémentation en C++ du GAN à convolution ne s'est jamais comportée comme souhaitée. En effet, quel que soit le paramétrage, le réseau produit des résultats comparables à ceux obtenus avec un perceptron simple. Cela a donc eu des répercussions sur nos avancées (voir \ref{CIFAR-remarque-convolution})
-Certaines fuites de mémoires ont été présentes par moment, mais uniquement sur une ou deux des quatre machines.
+Certaines fuites de threads dues au multithreading manuel avec les smartpointers ont été présentes par moment, mais uniquement sur une ou deux des quatre machines.
 
 \subsection{Résultats}
 Un réseau de configuration $784 \times 625 \times 100 \times 10$ avec uniquement une couche à convolution donne une erreur de 10\% comme classificateur de MNIST. [Manu : développer résultats du 25 mai (voir EdL et slides)]
