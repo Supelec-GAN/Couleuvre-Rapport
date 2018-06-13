@@ -42,7 +42,7 @@ Adagrad n'a pas été implémenté en raison des piètres performances annoncée
 
 \subsection{RMSprop}
 
-La RMSProp permet de résoudre ce problème. En effet, on a un décroissance exponentielle de l'influence de l'erreur dans le temps grâce au coefficient $\gamma$ . Ainsi, l'influence des anciennes valeurs de $(\frac{\partial J}{\partial W})^2$ décroit exponentiellement, les erreurs les plus récentes sont donc les plus influentes sur le pas.
+La RMSProp permet de résoudre ce problème. En effet, on a un décroissance exponentielle de l'influence de l'erreur dans le temps grâce au coefficient $\gamma$ correspondant au moment d'ordre 2. Ainsi, l'influence des anciennes valeurs de $(\frac{\partial J}{\partial W})^2$ décroit exponentiellement, les erreurs les plus récentes sont donc les plus influentes sur le pas.
 
 \begin{equation} 
 \begin{aligned}
@@ -52,16 +52,33 @@ W_{t+1} = W_t - \dfrac{\eta}{\sqrt{g_{t+1}} + \epsilon}\frac{\partial J}{\partia
 \end{equation} 
 
 \subsection{Adam}
-[formule]
-Adam est considéré comme plus performante que RMSprop
+
+\begin{equation} 
+\begin{aligned}
+g_{t+1} = \gamma g_t + (1-\gamma)(\frac{\partial J}{\partial W})^2  \\
+\hat{g}_{t} = \frac{g_{t} }{1 - \gamma^t} \\
+m_{t+1} = \delta g_t + (1-\delta)\frac{\partial J}{\partial W}   \\
+\hat{m}_{t} = \frac{m_{t} }{1 - \delta^t} \\
+W_{t+1} = W_t - \dfrac{\eta}{\sqrt{\hat{g}_{t+1}} + \epsilon}\hat{m}_{t}
+\end{aligned}
+\end{equation} 
+
+La méthode de descente de gradient AdamProp comprend deux aspects importants : le moment d'ordre 2 est conservé par rapport à la RMSProp, on a donc de nouveau cette décroissance exponentielle de l'influence des anciennes erreurs, qui vont pondérer le pas. De plus, elle prend en compte directement les anciennes valeurs de l'erreur, en remplaçant le terme d'erreur $\frac{\partial J}{\partial W}$ par $m_{t}$ qui correspond à un moment d'ordre 1 (moyenne). On garde donc en mémoire la tendance récente de l'erreur, ce qui permet d'adapter de façon plus précise le pas.
+$\hat{g}_{t}$ et $\hat{m}_{t}$ sont des estimateurs corrigeant des  biais si les pas sont trop faibles.
+Adam est considéré comme plus performante que RMSProp. 
+
 \subsection{Utilisation}
 
-L’utilisation d’Adam pour le générateur et de RMSProp pour le discriminateur (ayant
-comme but d'entraîner mieux le générateur) semble fonctionner bien. La qualité des images
-est plus variable (le générateur produit des images laides et belles).
-En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le discriminateur ne fonctionne pas. Cela corrobore les résultats présentés par d'autres \cite{auriau_apprentissage_2017}[ref nécessaire : autre ref]
+La plupart de nos réseaux semblaient présenter une faiblesse au niveau du générateur, dont le score était trop souvent très faible, par rapport à un discriminateur très performant. Une meilleure descente pourrait donc accélérer et rééquilibrer ces apprentissages. 
 
+Utiliser la RMSProp sur les deux réseaux permet d'apprendre des chiffres de belle qualité très rapidement (convergence jusqu'à 10 fois plus rapide que sous une descente de gradient normale), cependant on observe toujours ce déséquilibre entre les deux compétiteurs. Ce système semblait étrangement relativement instable, les paramètres amenant à la convergence étant assez restreints.
 
+L’utilisation d’Adam pour le générateur et de RMSProp pour le discriminateur (ayant comme but d'entraîner mieux le générateur) semble bien fonctionner. La qualité des images est plus variable (le générateur produit des images laides et belles).
+En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le discriminateur ne fonctionne pas. Cela corrobore les résultats présentés par d'autres \cite{auriau_apprentissage_2017}[ref nécessaire : autre ref].
+
+Enfin, si cela nous permet d'avoir un apprentissage plus performant, avec des images relativement belles en permettant au générateur de rester dans la course, cette solution ne permet pas de traiter le mode collapse : au contraire, l'apprentissage étant plus précis et rapide, on tombe très rapidement dans des états de mode collapse.
+
+Ces apprentissages plus performants sont importants dans le sens où ils permettent un apprentissage plus performant des réseaux : celui-ci devrait être alors à la fois plus profond et plus précis. Cela permettrait alors de travailler correctement avec des réseaux plus grands, et des bases de données plus complexes avec des couches convolutives (CIFAR...).
 
 \section{Réseaux de convolution}
 
