@@ -1,6 +1,21 @@
 \chapter{Generative Adversarial Networks - Wasserstein GAN}
+Avertissement : certains éléments présentés ici ont pu être incompris. On conseille au lecteur le plus grand sens critique.
+\section{Objectif}
+L'objectif du passage à un Wasserstein GAN est de résoudre deux problèmes majeurs. Le premier est que les scores du générateur et discriminateur ne sont pas reliés à la qualité de l'image. Le WGAN permet \cite{arjovsky_wasserstein_2017} l'établissement d'un lien entre la qualité d'image et le score du discriminateur qui joue le rôle de classificateur.  
+Le second problème concerne la stabilité de la génération d'image, en fonction du nombre d'apprentissage ou en fonction des paramètres.
 \section{Théorie}
-\subsection{Principe}
+L'idée globale consiste à remplacer le discriminateur par un \textit{critique}. La différence majeure réside dans la descente de gradient du critique. 
+La descente du gradient du Discriminateur s'écrit \cite{goodfellow_generative_2014}:
+$\nabla_{\theta_d}\frac{1}{m}\sum_{i=1}^{m}{[\log D(x^{(i)})+\log{(1-D(G(z^{(i)}))})]}$. Le second terme de la somme dépend de l'évaluation de la fonction de coût du discriminateur appliqué à une image $G(z^{(i)})$ issue du générateur. L'évolution du discriminateur dépend donc de l'état d'apprentissage du Discriminateur. Le réseau est purement concurrentiel. La théorie des jeux s'applique.
+Dans le cas du critique, on cherche à calculer la divergence entre la distribution $p_{r}$ qu'on cherche à représenter et la distribution $p_{\theta}$ décrite par le critique. On l'écrit sous la forme suivante, appelée métrique de Wasserstein à l'ordre 1 : 
+\[
+W(\mathbb{P}_r, \mathbb{P}_g)= \underset{\gamma \in (\mathbb{P}_r, \mathbb{P}_g)}{\text{inf}} \mathbb{E}_{(x,y)\sim\gamma} \left[ ||x-y||\right]
+\]
+Cette métrique n'est néanmoins pas exploitable par un réseau neuronal. On fait alors appel à un théorème qui n'a rien à voir avec les réseaux neuronaux, celui de la dualité Kantorovich-Rubinstein (développé dans \cite{villani_optimal_2008}), pour aboutir à une divergence équivalente (démonstration originale dans le papier \cite{arjovsky_wasserstein_2017}, des démonstrations plus abordables sont présentes dans \cite{irpan_read-through:_2017} et \cite{herrmann_wasserstein_2017}), sous la forme suivante: 
+\[
+W(\mathbb{P}_r, \mathbb{P}_g) = \underset{||f||_L<1}{\text{sup}}\mathbb{E}_{x\sim\mathbb{P}_r}\left[f(x)\right] - \mathbb{E}_{x\sim\mathbb{P}_g}\left[f(x)\right]
+\]
+Le critique a alors pour objectif la recherche de cette borne supérieure. L'estimation de la divergence de Wasserstein ne dépend alors que de la valeur des poids du critique, et non du Générateur.
 
 \section{Implémentation et résultats}
 Pour des raisons de structure de code et d'avancement dans le projet, le groupe Couleuvre n'a pas réussi à faire fonctionner un GAN à Critique. Nous conseillons de se référer au rapport du groupe Salamandre.
