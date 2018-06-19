@@ -3,23 +3,32 @@
 
 \section{Apprentissage par Mini-Batch}
 \subsection{Principe}
-L'apprentissage par Batch consiste à apprendre sur l'ensemble du batch d'apprentissage avant de mettre à jour chaque réseau, et de réitérer l'apprentissage à chaque itération sur l'ensemble du batch d'apprentissage.
+L'apprentissage par Batch consiste à apprendre sur l'ensemble du batch d'apprentissage avant de mettre à jour chaque réseau, et de réitérer l'apprentissage à chaque itération sur l'ensemble du batch d'apprentissage. Il s'oppose à l'apprentissage habituel, dit \textit{stochastique} (mais qui n'a rien de particulièrement stochastique), qui consiste à rétropropager l'erreur et mettre à jour les poids image par image.
 
-On calcule successivement la rétropropagation pour chaque image, on somme l'erreur sur l'ensemble des images et on applique la mise à jour du réseau avec la somme des erreurs. On obtient donc une moyenne des directions de propagation afin d'effectuer la mise à jour.
+On calcule successivement la rétropropagation pour chaque image, on somme l'erreur sur l'ensemble des images et on applique la mise à jour du réseau avec la somme des erreurs. On obtient donc une moyenne des directions de propagation afin d'effectuer la mise à jour, afin de converger de manière plus précise.
 
-Certaines bases d'apprentissage étant très grandes - soixante mille avec MNIST par exemple -, on va préférer à l'apprentissage par batch, l'apprentissage par Mini-batch. 
-On sélectionne aléatoirement parmi la base d'apprentissage et de tests un nombre plus petit d'éléments.
+Certaines bases d'apprentissage étant très grandes - soixante mille avec MNIST par exemple -, on va préférer à l'apprentissage par batch, l'apprentissage par minibatch. 
+On sélectionne aléatoirement parmi la base d'apprentissage et de tests un nombre plus petit d'éléments. Les valeurs sont habituellement de l'ordre de la dizaine d'éléments.
 \subsection{Implémentation}
 \paragraph{Mise à jour des poids}
 Afin de pouvoir effectuer la rétro-propagation uniquement à la fin de l'itération du minibatch, nous avons simplement 
 
 \paragraph{Sets d'apprentissage et de tests. plus petits}
-Dans le cas de MNIST, les chiffres du début de la bdd étant plus simple, nous avons afin d'obtenir de meilleurs résultats parfois effectué une sélection aléatoire sur uniquement une première partie des 60000 images d'apprentissage (cf argument \textit{labelTrainSize}) et des 10000 images de tests (cf argument \textit{labelTestSize}.
+Dans le cas de MNIST, les chiffres du début de la base d'apprentissage étant plus simple, nous avons, afin d'obtenir de meilleurs résultats, parfois effectué une sélection aléatoire sur uniquement une première partie des 60000 images d'apprentissage (cf argument \textit{labelTrainSize} du fichier de configuration \cite{barrios_gan_2018}) et des 10000 images de tests (cf argument \textit{labelTestSize}.
 
 \subsection{Résultats}
-Notre équipe a obtenu des résultats peu convaincants, et très différents des résultats du groupe Salamandre 
-Globalement, l'apprentissage s'effectue légèrement plus rapidement pour un même nombre d'itérations, au prix d'une augmentation du temps de calcul par itération (proportionnel selon la taille des batch). Cette technique a donc été abandonnée.
-\includegraphics[width=1.5\textwidth]{images/08-gan_ameliorations_resultats_1.jpg}
+Notre équipe a obtenu des résultats corrects mais peu intéressant, et très différents des résultats relativement exotiques du groupe Salamandre \cite{bouvier_dyvoire_dessine-moi_2018}.
+Globalement, l'apprentissage s'effectue légèrement plus rapidement pour un même nombre d'itérations, au prix d'une augmentation du temps de calcul par itération (proportionnel selon la taille des batch). Le temps de calcul était donc quasiment multiplié par la taille du batch pour un résultat équivalent en stochastique (voire pire dans le cas du minibatch 1, l'apprentissage stochastique ayant par ailleurs été optimisé, comme on peut le remarquer sur la figure ci-dessous en comparant la courbe orange de la jaune).
+
+La technique de minibatch, bien qu'intéressante dans des cas précis, tel que l'apprentissage simultané de plusieurs chiffres au même temps, a donc été par la suite abandonnée.
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1\textwidth]{images/08-gan_ameliorations_resultats_1.jpg}\caption{Apprentissage par minibatch 100 (marron et gris) et minibatch 10 (vert et cyan) d'un GAN sur MNIST comparé à un apprentissage stochastique (orange et bleu clair)}
+\end{center}
+\end{figure} 
+
+
 
 \section{Algorithmes de pas d'apprentissage adaptatif}
 \subsection{Principe}
