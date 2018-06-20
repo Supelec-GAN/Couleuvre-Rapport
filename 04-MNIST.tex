@@ -37,21 +37,28 @@ L'extraction se fait donc en lisant successivement les octets et en les stockant
 
 \section{Apprentissage de la base de données}
 \subsection{Paramétrage du réseau de neurones}
-Bien que le format de l'entrée soit le même (vecteur colonne si ce n'est la taille qui change), un réseau à 3 ou 4 neurones ne suffit pas. Il a fallu adapter de façon empirique les différents paramètres. On peut jouer sur :
+Bien que le format de l'entrée soit le même que pour le XOR (vecteur colonne si ce n'est la taille qui change), un réseau à 3 ou 4 neurones ne suffit pas. Il a fallu adapter de façon empirique les différents paramètres. On peut jouer sur :
 \begin{itemize}
-  \item Le nombre de neurones
+  \item Le nombre de neurones par couche
   \item Le nombre de couches
   \item Le pas d'apprentissage
   \item Les fonctions d'activations par couches
   \item Le nombre d'apprentissages
 \end{itemize}
 \subsubsection{Le nombre de couches et de neurones}
-
+Dans le cas d'un perceptron, nous avons réussi à obtenir un réseau classificateur de chiffre à 90\% de succès avec uniquement une couche composée de 10 neurones. Néanmoins, afin d'obtenir un score de réussite supérieur, il a été nécessaire de d'augmenter la nombre de couche à 3, selon une configuration $784\times300\times100\times10$ où 784 représente le nombre d'entrée.
 \subsubsection{Le pas d'apprentissage}
-
+Le pas d'apprentissage par défaut utilisé avec succès sur le XOR était de $\eta=0,01$. Or, pour MNIST, un pas de $\eta=0,01$ ne permet pas au réseau de sortir d'un minimum local. Un pas fonctionnel était de $\eta=0,2$
 \subsubsection{Les fonctions d'activations par couches}
-
+Nous avons, comme dans le cas du XOR (cf. \ref{subsec:XOR_Résolution}), continué à utiliser un fonction d'activations sigmoïde pour toutes les couches : $\frac{1}{1+exp(-\lambda x)}$, avec cette fois-ci $\lambda=0,1$
 \subsubsection{Le nombre d'apprentissages}
-
+Le nombre d'apprentissage nécessaire pour obtenir un taux d'erreur inférieur à 10\% est faible, aux alentours de 1000 apprentissages. Néanmoins, passé ce nombre d'apprentissage, la courbe d'apprentissage varie peu. Il est nécessaire d'effectuer 55000 apprentissages pour avoir un taux d'erreur de 5\%.
 \subsection{Résultat}
-
+On peut voir le résultat sur la figure \ref{fig:res_MNIST}
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1\textwidth]{images/17_11_03-courbe_MNIST.png}
+\caption{Courbe du taux d'erreur de MNIST}
+\label{fig:res_MNIST}
+\end{center}
+\end{figure}

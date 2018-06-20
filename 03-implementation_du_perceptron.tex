@@ -56,6 +56,8 @@ Dans le second cas, il faut séparer le plan en 4 quadrants, et regrouper les qu
 Nous avons choisi de travailler sur la deuxième situation, le but est donc d'obtenir un réseau qui découpe le carré unité en quatre quadrants bien distincts, qui correspondent aux quatre quadrants délimités par les axes des abscisses et des ordonnées.
 
 \subsection{Résolution}
+\label{subsec:XOR_Résolution}
+
 
 Il s'agit d'un problème à deux dimensions, renvoyant une seule valeur, et nécessitant 3 couches cachées. Nous optons donc pour un réseau 2-2-1. 
 
@@ -66,7 +68,40 @@ Qualitativement, on peut dire que
   \item la troisième couche se charge de réaliser la fonction \"ou\" sur les résultats renvoyés par la couche 2, afin que le résultat final soit $1$ si le point se trouve dans l'un des deux quadrants correspondant au résultat $1$.
 \end{itemize}
 
-De plus, nous avons choisi d'utiliser des fonctions d'activations sigmoïdes en $\frac{1}{1+exp(-\lambda x}$. Une telle fonction d'activation est nécessaire pour pouvoir permettre un apprentissage par rétro-propagation (continue et dérivable), cependant elle empêche d'avoir un résultat booléen à la fin, puisque la valeur de sortie varie continûment entre $0$ et $1$. Le résultat est donc une densité de probabilité. 
+De plus, nous avons choisi d'utiliser des fonctions d'activations sigmoïdes en $\frac{1}{1+exp(-\lambda x)}$. Une telle fonction d'activation est nécessaire pour pouvoir permettre un apprentissage par rétro-propagation (continue et dérivable), cependant elle empêche d'avoir un résultat booléen à la fin, puisque la valeur de sortie varie continûment entre $0$ et $1$. Le résultat est donc une densité de probabilité. Le paramètre de fonction d'activation a été fixé à $\lambda = 0.4$ après différents tests affichés aux figures \ref{fig:comp_lambda_XOR} et suivante.
+
+\begin{figure}[h]
+\begin{center}
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/17_10_20-XOR/courbe-1.png}
+\centering\\$\lambda = 2$
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/17_10_20-XOR/courbe-2.png}
+\centering\\$\lambda = 4$
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/17_10_20-XOR/courbe-3.png}
+\centering\\$\lambda = 8$
+\endminipage\hfill
+\caption{taux d'erreur selon la norme 2}
+\label{fig:comp_lambda_XOR}
+
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/17_10_20-XOR/courbe-4.png}
+\centering\\$\lambda = 2$
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/17_10_20-XOR/courbe-5.png}
+\centering\\$\lambda = 4$
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/17_10_20-XOR/courbe-6.png}
+\centering\\$\lambda = 8$
+\endminipage\hfill
+\caption{nombre de réussites (chiffre identifié correctement) pour 20 tentatives}
+\end{center}
+\end{figure} 
 
 Enfin, nous utilisons un pas d'apprentissage de $\eta <= 0.01$. Bien que la littérature suggère souvent le pas empirique $\eta = 0.2$, la valeur de $0.01$ est la valeur maximale que nous ayons trouvée qui permette au XOR de converger. Au delà, le réseau se bloque presque systématiquement dans un état non désiré.
 
