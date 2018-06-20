@@ -9,12 +9,22 @@ Nous verrons dans ce chapitre tout d'abord l'implémentation de notre GAN, puis 
 
 \section{Implémentation des \textit{Generative Adversarial Networks}}
 \subsection{Présentation de la structure}
-\subsection{Ratio d'apprentissage - Influence}
+
+La structure de notre \textit{Generative Adversarial Networks} diffère assez peu de ce que nous avons implémenté pour MNIST : on suit le même principe, la classe \textit{Application} ne possédant plus un réseau mais les deux réseaux de neurones nécessaires au GAN. 
+Ainsi, une classe \textit{Teacher} se charge d'apprendre aux deux réseaux en fonction des paramètres que l'on définit dans un fichier de configuration json. Enfin, pour une plus grande souplesse dans la création de nos réseaux, nous avons implémenté divers types de couches de neurones, avec NeuronLayer classe abstraite mère, dont découlent les couches bruitées (NoisyLayer), les couches de perceptrons classiques (FullConnectedLayer), et les différentes couches à convolution (traitées dans le chapitre suivant).
+
 \subsection{Taille des réseaux - Influence}
+
+
+
 \subsection{Taille des entrées - Influence}
-Les entrées, qui consistent en du bruit $\in [-1,1]$ doivent être suffisamment nombreuses. Bien qu'une entrée de bruit est réelle (double flottant dans l'implémentation) et qu'elle devrait en théorie correspondre à une infinité d'entrées, les résultats \textsuperscript{ref. nécessaire} montrent que le nombre d'entrées doit être idéalement au moins aussi grande que le nombre de sorties.
+
+Les entrées, qui consistent en du bruit $\in [-1,1]$ doivent être suffisamment nombreuses. Bien qu'une entrée de bruit soit réelle (double flottant dans l'implémentation) et qu'elle devrait en théorie correspondre à une infinité d'entrées, les résultats \textsuperscript{ref. nécessaire} montrent que le nombre d'entrées doit être idéalement au moins aussi grande que le nombre de sorties.
+Une solution couramment adoptée est l'utilisation d'entrées, donc de bruit, sur les autres couches du générateur. On aura alors une entrée sur la première couche du réseau de neurones, et les autres couches peuvent alors être bruitées \cite{goodfellow_nips_2016}. Nous traiterons cette méthode dans ce chapitre sur le point du \textit{Mode Collapse} du Générateur.
 
 \section{Premiers résultats}
+
+
 
 \section{Difficultés rencontrées et solutions émises}
 
@@ -111,7 +121,7 @@ La suppression du biais ne permet donc pas de résoudre ce problème, c'est bien
 
 \subsubsection{Solution envisagée : Injection de bruit dans chaque couche du Générateur (fructueuse)}
 
-Une solution est proposée par Ian Goodfellow dans son article dans NIPS 2016 intitulé \textbf{Tutorial : Generative Adversarial Networks}. La structure du générateur est assez libre dans l'architecture des GAN, ainsi, on peut placer des entrées (du bruit) au début du réseau, mais aussi sur n'importe quelle couche de celui-ci notamment, sans réellement compromettre les performances. En effet, injecter des entrées de bruit dans des couches intermédiaires revient à faire des entrées classiques qui traverseront moins de couches de neurones. Cependant, le bruit au niveau de la dernière couche semble perturber le réseau et l'empêche de tomber dans un mode collapse. 
+Une solution est proposée par Ian Goodfellow dans son article dans NIPS 2016 intitulé \textbf{Tutorial : Generative Adversarial Networks} \cite{goodfellow_nips_2016}. La structure du générateur est assez libre dans l'architecture des GAN, ainsi, on peut placer des entrées (du bruit) au début du réseau, mais aussi sur n'importe quelle couche de celui-ci notamment, sans réellement compromettre les performances. En effet, injecter des entrées de bruit dans des couches intermédiaires revient à faire des entrées classiques qui traverseront moins de couches de neurones. Cependant, le bruit au niveau de la dernière couche semble perturber le réseau et l'empêche de tomber dans un mode collapse. 
 
 Cela peut s'expliquer par le fait que les entrées bruitées perturbent la dernière couche du réseau, l'empêchant de se stabiliser sur une unique sortie trompant le discriminateur. Cette perturbation va forcer le générateur à diversifier ses sorties.
 Une autre hypothèse serait que la dernière couche ne peut pas différencier les entrées provenant des couches antérieures des entrées de bruit si celles-ci sont suffisamment nombreuses. Ainsi, il sera obligé de toutes les prendre en compte (il ne peut pas juste annuler les poids correspondant) ce qui générera de la variabilité dans la sortie, puisqu'une partie non négligeable des entrées n'est que du bruit.
