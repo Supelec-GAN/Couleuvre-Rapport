@@ -100,8 +100,57 @@ En nommant $X_0$ le vecteur en entrée du perceptron, on a la nouvelle équation
   \label{equation_propagation_matricielle}
 \end{equation}
 
-\section{Rétropropagation}
-%%%%%%%%%%%%%%
-% OMG on n'avait pas de partie dessus ? :o 
-%%%%%%%%%%%%%%
+\section{Apprentissage : Rétropropagation}
+\begin{remark}
 On a dans toutes nos implémentations pris un pas de rétropropagation de $dx=0,01$.
+\end{remark}
+
+La propagation des entrées dans un perceptron permet d'obtenir la sortie de ce réseau. Or, tout l'objectif des réseaux neuronaux est de les améliorer afin d'obtenir les sorties voulues. Ainsi, l'apprentissage du perceptron est nécessaire. Celui-si se fait à travers la rétro-propagation des erreurs. Il s'agit en fait d'effectuer une descente de gradient, qui consiste à déterminer pour chaque paramètre du réseau (coefficient de poids ou de biais) le gradient par rapport à la sortie et de modifier ce paramètre en conséquence pour minimiser la sortie. La rétropropagation  consiste donc à calculer l’influence de chaque paramètre sur la sortie et à les mettre à jour en fonction de cette influence
+
+La formule de mise à jour du réseau à chaque apprentissage est la suivante :
+\[
+W(t+1) = W(t) + \eta \frac{\partial E}{\partial W} 
+\]
+avec $\eta$ le pas de convergence et $\frac{\partial E}{\partial W} $ la matrice de descente du gradient .\\
+
+\begin{remark}
+Dans l'article de LeCun 98 \cite{lecun_efficient_1998}, les équations matricielles de la rétropropagation données par l’article sont fausses. 
+En effet, un abus de notation fait penser à un produit matriciel. Il s’agit en fait des matrices de produits (coefficients à coefficients).
+Les équations présentées ci-dessous sont corrigées.
+\end{remark}
+
+A la couche $k$ l'influence des poids est donnée par : 
+\[
+	\frac{\partial E^p}{\partial W _k} = \frac{\partial F}{\partial W}(W_k, X_{k-1})\frac{\partial E^p}{\partial X_k}
+\]
+
+Avec $\frac{\partial F}{\partial W}(W_k, X_{k-1})$ la matrice jacobienne de F par rapport à la variable $W_k$.
+
+Pour pouvoir calculer l'influence des poids de toutes les couches, il faut donc calculer $\frac{\partial E^p}{\partial W_k}$
+
+On peut calculer par récurrence cette valeur pour toutes les couches.
+\[
+	\frac{\partial E^p}{\partial X _{k-1}} = \frac{\partial F}{\partial X}(W_k, X_{k-1})\frac{\partial E^p}{\partial X_k}
+\]
+
+Avec $\frac{\partial F}{\partial X }(W_k, X_{k-1})$ la matrice jacobienne de $F$ par rapport à la variable $X_k$. De plus, dans un perceptron on peut noter la sortie de la couche $k$ : 
+\[
+Y_k = W_k X_k \]
+\[
+X_k = F(Y_k)
+\]
+
+On obtient donc ces 3 équations : 
+\begin{align*}
+\frac{\partial E^p}{\partial y_k^i} &= f'(x_k^i)\frac{\partial E^p}{\partial x_k^i} \\
+\frac{\partial E^p}{\partial w_k^{i,j}}&= x^j_{k-1} \frac{\partial E^p}{\partial y_k^i}\\
+\frac{\partial E^p}{\partial x_{k-1}^m} &= \sum_i(w_k^{im}\frac{\partial E^p}{\partial X_k})
+\end{align*}
+
+En forme matricielle, ces équations donnent :
+\begin{align*}
+\frac{\partial E^p}{\partial Y_k} &= Diag(f'(x_k^i))\frac{\partial E^p}{\partial x_k^i} \\
+\frac{\partial E^p}{\partial W_k}&= X^T_{k-1} \frac{\partial E^p}{\partial Y_k}\\
+\frac{\partial E^p}{\partial X_{k-1}} &= W_k^T\frac{\partial E^p}{\partial X_k}
+\end{align*}
+
