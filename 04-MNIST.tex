@@ -52,12 +52,12 @@ Le pas d'apprentissage par défaut utilisé avec succès sur le XOR était de $\
 \subsubsection{Les fonctions d'activations par couches}
 Nous avons, comme dans le cas du XOR (cf. \ref{subsec:XOR_Résolution}), continué à utiliser un fonction d'activations sigmoïde pour toutes les couches : $\frac{1}{1+exp(-\lambda x)}$, avec cette fois-ci $\lambda=0,1$
 \subsubsection{Le nombre d'apprentissages}
-Le nombre d'apprentissage nécessaire pour obtenir un taux d'erreur inférieur à 10\% est faible, aux alentours de 1000 apprentissages. Néanmoins, passé ce nombre d'apprentissage, la courbe d'apprentissage varie peu. Il est nécessaire d'effectuer 55000 apprentissages pour avoir un taux d'erreur de 5\%.
+Le nombre d'apprentissage nécessaire pour obtenir un taux d'erreur inférieur à 10\% est relativement important, notamment par rapport au nombre d'apprentissages nécessaire au GAN, aux alentours de 250 000 apprentissages. Néanmoins, passé ce nombre d'apprentissage, la courbe d'apprentissage varie peu. Il est nécessaire d'effectuer environ un million d'apprentissages pour avoir un taux d'erreur de 5\%. Ces résultats ont été effectués avec des descentes de gradients classiques sur le réseau à 3 couches cité plus haut.
 \subsection{Résultat}
 On peut voir le résultat sur la figure \ref{fig:res_MNIST}
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=1\textwidth]{images/17_11_03-courbe_MNIST.png}
+\includegraphics[width=1\textwidth]{images/courbe_MNIST.png}
 \caption{Courbe du taux d'erreur de MNIST}
 \label{fig:res_MNIST}
 \end{center}
