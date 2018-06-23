@@ -17,6 +17,18 @@ Ainsi, une classe \textit{Teacher} se charge d'apprendre aux deux réseaux en fo
 
 
 
+\subsection{Ratio d'apprentissage- Influence}
+
+\paragraph{En théorie :}
+On a vu dans la partie précédente l'importance théorique de l'équilibre entre les deux réseaux : en effet, l'état idéal correspond à l'équilibre de Nash, où le générateur et le discriminateur sont tous deux au même niveau, et si l'un progresse, cela sera au détriment de l'autre (voir partie théorique sur les GAN). Cela correspondrait au niveau des scores que le générateur répondrait 0.5 à toutes les demandes : il ne saurait pas si l'image est réelle ou fictive. Le générateur ne serait pas encore assez fort pour entièrement tromper le discriminateur, mais il ne serait pas non plus complètement démasqué par le discriminateur. \newline
+Cet état d'équilibre devrait permettre aux deux réseaux d'apprendre simultanément. Pour équilibrer le système et atteindre cet état, un paramètre sur lequel il serait intéressant de jouer est le ratio d'apprentissage : lors d'un cycle d'apprentissage, combien de fois devons-nous faire apprendre le générateur puis combien de fois devons-nous entrainer le discriminateur ? 
+Il y a deux aspects à prendre en compte pour ce paramètre : tout d'abord, adapter cette cadence d'apprentissage permet de rééquilibrer les deux réseaux. De plus, il peut être intéressant d'entrainer le générateur un grand nombre de fois par rapport à un discriminateur fixé, permettant alors un apprentissage plus précis. Le générateur essaiera alors de viser une cible fixe, et apprendra de manière plus efficace.
+
+\paragraph{En pratique :}
+En pratique, ce paramètre a été très difficile à adapter : en effet, l'équilibre de Nash a été en pratique impossible à obtenir, le générateur étant la majorité du temps largement au dessus du générateur. De plus, le système est trop instable pour permettre un tel équilibre. Ainsi, la cadence d'apprentissage ne nous permettait que d'aider le générateur, lui permettant de garder le rythme un peu plus longtemps dans la course contre le discriminateur.\newline
+\\
+Nous verrons d'autres méthodes qui jouent directement sur ces apprentissages, et qui permettent alors d'aider le générateur à chaque itération, dans la partie suivante, ce problème étant récurrent dans notre mise en place des GANs.
+
 \subsection{Taille des entrées - Influence}
 
 Les entrées, qui consistent en du bruit $\in [-1,1]$ doivent être suffisamment nombreuses. Bien qu'une entrée de bruit soit réelle (double flottant dans l'implémentation) et qu'elle devrait en théorie correspondre à une infinité d'entrées, les résultats \textsuperscript{ref. nécessaire} montrent que le nombre d'entrées doit être idéalement au moins aussi grande que le nombre de sorties.
