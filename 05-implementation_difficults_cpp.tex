@@ -29,7 +29,13 @@ Nous conseillons aux membres du groupe d'adopter dès le début de bonnes pratiq
 \subsection{Affichage des résultats}
 Les images et courbes étaient initialement manuellement obtenues depuis des modèles de fichiers Excel.
 Afin de ne pas avoir à coder une seule ligne du language hérétique qu'est Python et son module GnuPlot, nous avons écrit un simple script bash (disponible sur le dépôt github) exploitant GnuPlot pour l'affichage des résultats. 
-
+\begin{figure}[!h]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/18_02_22-GnuPlot.png}
+\caption{Un exemple d'une exportation GnuPlot}
+\label{fig:type-appr-GAN}
+\end{center}
+\end{figure} 
 \subsection{Rapport}
 Le rapport est fait sous LaTeX, avec des éditeurs et compilateurs en local ou via Overleaf (et son module git) ou Sharelatex (et son module Gitlab). La bibliographie BibTex est générée à partir de l'export de la base de donnée de documents Zotero. La compilation vers PDF en CI n'a pas été faite car Travis-CI ne le prend pas en charge facilement (nécessité de réinstaller latex sur les images docker à chaque compilation, ce qui est beaucoup trop lent). La compilation aurait été faisable, en utilisant une image gitlab-ci latex, si le projet avait été hosté sur Gitlab.com.
 

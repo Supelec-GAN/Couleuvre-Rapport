@@ -39,8 +39,7 @@ Le \textbf{Générateur} de son côté est le réseau qui doit générer des don
 
 On souhaite obtenir un réseau qui génère des images $28 \times 28$ de moutons, suffisamment réalistes pour ne pouvoir être distinguées de réelles photos de moutons. On souhaite également observer de la variation dans ces images (avoir plein de moutons différents). 
 
-L'ensemble de sortie du \textbf{Générateur} est donc un ensemble inclus dans l'ensemble des images $28 \times 28$ et qui contient toutes les images que le \textbf{Générateur} considère comme étant des moutons réalistes. Pour être certain que l'ensemble d'entrée soit de dimension au moins aussi importante que l'ensemble de sortie, on mettra en entrée du réseau un bruit blanc de dimension $28 \times 28$. On est certain de cette façon que la taille de l'ensemble d'entrée n'impose pas de restriction sur les sorties. 
-
+L'ensemble de sortie du \textbf{Générateur} est donc un ensemble inclus dans l'ensemble des images $28 \times 28$ et qui contient toutes les images que le \textbf{Générateur} considère comme étant des moutons réalistes. Pour être certain que l'ensemble d'entrée soit de dimension au moins aussi importante que l'ensemble de sortie, on mettra en entrée du réseau un bruit blanc de dimension $28 \times 28$. On est certain de cette façon que la taille de l'ensemble d'entrée n'impose pas de restriction sur les sorties. \\
 \end{example}
 
 \begin{example} Génération du chiffre 8
@@ -48,7 +47,7 @@ L'ensemble de sortie du \textbf{Générateur} est donc un ensemble inclus dans l
 On peut schématiser de la manière suivante un réseau générateur entraîné à générer des 8.
 \begin{figure}[h]
 \begin{center}
-\includegraphics[width=0.5\textwidth]{images/Colloque/GAN/generateur.png}\caption{Génération du chiffre 8 par un générateur $100\times 400\times 784$}
+\includegraphics[width=0.7\textwidth]{images/Colloque/GAN/generateur.png}\caption{Génération du chiffre 8 par un générateur $100\times 400\times 784$}
 \end{center}
 \end{figure} 
 \end{example}
@@ -60,7 +59,7 @@ On dispose de deux fonctions de coûts, notées $J^{(D)}(\theta^{(D)}, \theta^{(
 
 On note $z$ l'entrée du générateur (du bruit blanc multidimensionnel), $x$ une image réelle (issue d'une banque d'image), $G(z)$ la sortie du générateur (une image générée) et enfin $D(x)$ et $D(G(z))$ la sortie du discriminateur comportant en entrée respectivement une image réel et une image générée (le score donné respectivement à une image réelle et à une image générée. $x$ est alors une variable d'observation tandis que $z$ est une variable \textit{indirecte}.
 
-$D$ et $G$ représentent alors des fonctions (différentiables) de paramètres $\theta^{(D)}$ et $\theta^{(G)}$.
+$D$ et $G$ représentent alors des fonctions (différentiables) de paramètres $\theta^{(D)}$ et $\theta^{(G)}$.\\
 
 \begin{remark}(Bruit)
 On notera que le bruit n'est pas nécessairement présent uniquement sur la première couche, il peut être présent quel que soit la couche. Il a été implémenté avec succès (voir \textit{NoisyLayer} dans \cite{barrios_gan_2018}), et utilisé avec succès par le groupe Salamandre \cite{bouvier_dyvoire_dessine-moi_2018}.
@@ -68,30 +67,45 @@ On notera que le bruit n'est pas nécessairement présent uniquement sur la prem
 \subsection{Théorie des jeux et équilibre de Nash}
 \subsubsection{$D(G(z)) = D(x) = \frac{1}{2}$ : un premier critère d'optimalité}
 Comme toute fonction de coût, le discriminateur cherchera au cours de l'apprentissage à réduire la fonction de coût $J^{(D)}(\theta^{(D)}, \theta^{(G)})$, en n'ayant de contrôle que sur $\theta^{(D)}$. De même, le générateur cherchera à réduire la fonction de coût $J^{(G)}(\theta^{(D)}, \theta^{(G)})$, en n'ayant de contrôle que sur $\theta^{(G)}$. 
-La solution à ce problème peut se traduire en théorie des jeux. On obtient alors un équilibre de Nash. 
+La solution à ce problème peut se traduire en théorie des jeux. On obtient alors un équilibre de Nash. On s'attend alors à ce que $D(G(z)) = D(x) = \frac{1}{2}$. 
 
 \subsection{Les différentes distributions statistiques impliquées}
-Les distributions que l'on considère sont $p{data}$, $p_{model}$ et $p_{G}$, ....
-
+Les distributions que l'on considère sont $p_{data}$, $p_{model}$ et $p_{G}$. $p_{G}$ correspond à la distribution représentée par le générateur, tandis que $p_{model}$ est la distribution vers lequel on souhaiterait tendre. Néanmoins, cette distribution $p_{model}$ est inatteignable car l'ensemble de la base d'apprentissage ne représente qu'une approximation de celle-ci, que nous noterons $p_{data}$. On cherche donc, par l'apprentissage semi-supervisé, à faire tendre $p_{G}$ vers $p_{data}$. \\
+\begin{remark}
+On pourrait introduire de plus une 4ème distribution $p_{D}$, qui correspondrait à l'interprétation du discriminateur de $p_{data}$. Ainsi, plus précisément, on chercherait au cours de l'apprentissage à faire tendre $p_{G}$ vers $p_{D}$ et $p_{D}$ vers $p_{data}$. Néanmoins, $p_{D}$ se construit simultanément (voir section \ref{subsect:Appr}) à partir de $p_{G}$ et $p_{data}$, ce qui rend la réflexion peu aisée. On s'en tiendra donc à  $p_{G}$ et $p_{data}$.
+\end{remark}
 \section{Les fonctions de coût, l'apprentissage}
 
 \subsection{Les différentes fonctions de coût}
 \paragraph{Discriminateur}
 Le discriminateur n'a, dans le cas du GAN classique, qu'une fonction de coût qui soit utilisée : \\
-$J^{(D)}(\theta^{(D)}, \theta^{(G)}) = -\frac{1}{2}\mathbb{E}_{x~p_{data}}\log{D(x)}-\frac{1}{2}\mathbb{E}_{z}\log{1-D(G(z))}$ 
+\begin{center}
+$J^{(D)}(\theta^{(D)}, \theta^{(G)}) = -\frac{1}{2}\mathbb{E}_{x~p_{data}}\log{D(x)}-\frac{1}{2}\mathbb{E}_{z}\log{(1-D(G(z)))}$
+\end{center}
+\vspace{8pt}
+$-\frac{1}{2}\mathbb{E}_{x~p_{data}}\log{D(x)}$ correspond à la capacité de D à reconnaître les vraies images, tandis que $-\frac{1}{2}\mathbb{E}_{z}\log{(1-D(G(z)))}$ correspond à la capacité de D à reconnaître les résultats de G.
 
-$-\frac{1}{2}\mathbb{E}_{x~p_{data}}\log{D(x)}$ correspond à la capacité de D à reconnaître les vraies images, tandis que $-\frac{1}{2}\mathbb{E}_{z}\log{1-D(G(z))}$ correspond à la capacité de D à reconnaître les résultats de G.
-
+\begin{remark}
+Dans l'implémentation, par équivalence de développement limité, nous avons cherché à minimiser $-\log{(D(G(z))}$ plutôt que $\log(1-D(G(z))$.
+\end{remark}
 \paragraph{Générateur}
 Différentes fonctions de coût peuvent être utilisées pour le Générateur. Nous avons implémenté le MinMax, l'heuristique non saturante et le maximum de vraisemblance (aussi appelée KL-Divergence). 
 
 \subsection{Apprentissage par récompense ou par punition ?}
-Figure \ref{fig:type-appr-GAN}
+\label{subsect:Appr}
+La figure \ref{type-appr-GAN} illustre les 3 apprentissages successifs possibles pour le GAN. Habituellement, les 2 apprentissages du discriminateur se font un pour un, et on joue sur le rapport entre le nombre de d'apprentissages du générateur et celui du générateur (voir \textit{nbGenTeach} et \textit{nbDisTeach} dans le fichier de configuration \cite{barrios_gan_2018}). 
 \begin{figure}[!h]
 \begin{center}
 \includegraphics[width=1\textwidth]{images/Colloque/GAN/apprentissage.png}
 \caption{Les 3 types d'apprentissages successifs appliqués au GAN}
-\label{fig:type-appr-GAN}
+\label{type-appr-GAN}
 \end{center}
 \end{figure} 
 \subsection{Quand un réseau prend le pas sur l'autre}
+Lorsque le rapport d'apprentissage est mal paramétré, on assiste à une déroute de l'un ou l'autre des réseaux, et la génération de contenu est alors non-fonctionnelle. En effet, si le discriminateur est trop performant, il indiquera à chaque apprentissage du générateur que l'image est une fausse image; le générateur n'aura alors aucune indication de la \"direction\" vers laquelle s'orienter, l'apprentissage ne lui procure aucune information si ce n'est que la distribution $p_{G}$ ne colle pas parfaitement à $p_{data}$; le générateur ne peut donc pas s'améliorer.
+A contrario, un générateur beaucoup plus performant que le discriminateur d'un point de vue fonction d'erreur (ce qui est beaucoup plus rare et moins problématique) est plus difficile à interpréter; cela indique que le discriminateur n'a pas assez appris et qu'il sur-apprendra par la suite. Dans les 2 cas, on observe un apprentissage moins efficace.
+
+
+
+
+

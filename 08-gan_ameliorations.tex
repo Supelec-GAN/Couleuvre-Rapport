@@ -94,8 +94,7 @@ Ces apprentissages plus performants sont importants dans le sens où ils permett
 \subsection{Implémentation}
 Comme indiqué au \ref{implementation-C++-convolution}, nous avons dû coder la convolution à la main.
 Afin de mettre en place un réseau à convolution, nous avons implémenté les différentes couches nécessaires : couche à convolution, couche de \textit{zero-padding} et couche de \textit{max-pooling}.
-Néanmoins, l'implémentation en C++ du GAN à convolution ne s'est jamais comportée comme souhaitée. En effet, quel que soit le paramétrage, le réseau produit des résultats comparables à ceux obtenus avec un perceptron simple. Cela a donc eu des répercussions sur nos avancées (voir \ref{CIFAR-remarque-convolution})
-Certaines fuites de mémoires ont été présentes par moment, mais uniquement sur une ou deux des quatre machines.
+Néanmoins, l'implémentation en C++ du GAN à convolution ne s'est jamais comportée comme souhaitée. En effet, quel que soit le paramétrage, le réseau produit des résultats comparables à ceux obtenus avec un perceptron simple. Cela a donc eu des répercussions sur nos avancées (par exemple les tests sur la banque d'image CIFAR10 n'ont pas donné de résultats concluants - nous ne les présenterons donc pas).
 
 \subsection{Résultats}
 Un réseau de configuration $784 \times 625 \times 100 \times 10$ avec uniquement une couche à convolution donne une erreur de 10\% comme classificateur de MNIST. [Manu : développer résultats du 25 mai (voir EdL et slides)]
@@ -120,10 +119,4 @@ Cette section regroupe les pistes de recherche que nous avons pu rencontrer mais
 
 \subsection{Generative Adversarial Networks 1D : Visualisation en une dimension}
 
-Afin de mieux comprendre le fonctionnement du GAN, nous nous sommes intéressés à l'étude du GAN à une dimension.  Le principe consiste à remplacer la banque d'image, de dimension 784, par des entrées à une dimension. On peut l'interpréter comme un scalaire, ou comme un pixel. La distribution représentée $p_{data} est alors une distribution unidimensionnelle, que nous allons pouvoir représenter graphiquement, plutôt qu'une distribution à 784 dimensions.
-
-
-
-
-
-
+Afin de mieux comprendre le fonctionnement du GAN, nous nous sommes intéressés à l'étude du GAN à une dimension.  Le principe consiste à remplacer la banque d'image, de dimension 784, par des entrées à une dimension. On peut l'interpréter comme un scalaire, ou comme un pixel. La distribution représentée $p_{data}$ est alors une distribution unidimensionnelle, que nous allons pouvoir représenter graphiquement, plutôt qu'une distribution à 784 dimensions.
