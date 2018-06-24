@@ -167,10 +167,11 @@ Enfin, nous avons été incapables de trouver des corrélations pertinentes entr
 
 \paragraph{Sur l'analyse des échantillons d'images}
 
-Deux problèmes principaux s'opposent à l'analyse 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% A Compléter 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Afin de connaitre l'avancée dans l'apprentissage de nos réseaux, une solution assez intuitive serait d'observer les images produites par le générateur : on aurait alors un aperçu rapide de l'état de notre système, peut-on faire des beaux chiffres ou non ? Cependant, deux problèmes principaux s'opposent à l'analyse : \newline
+Tout d'abord, étant donné le nombre colossal d'apprentissages, et le fait qu'idéalement le système devrait être automatisé, un observation des chiffres à l'oeil nu ne peut être viable pour une équipe à effectifs restreints : observer de manière efficace des milliers d'images, les discriminer pour identifier le point où l'apprentissage est satisfaisant pour arrêter l'entrainement à ce point là est une tâche non réalisable à grande échelle. \newline
+Il faudrait donc trouver un moyen d'analyser la qualité des images de manière informatique. Cependant, cela pose un défi conséquent : l'analyse doit pouvoir identifier la qualité d'une image comme un humain le ferait, ce qui se révèle très difficile, le concept de beauté ou de réalisme d'une image étant difficilement pris en compte dans une telle analyse.
+Ce problème est donc très répandu, et la solution dans les plus grands groupes est d'utiliser un nombre important de classificateurs humains pour tester les images, cela reste la méthode la plus efficace, qui est malheureusement inaccessible dans le cadre de ce projet. \newline
+Cependant, on peut explorer d'autres méthodes purement informatique, notamment l'évaluation par un réseau tiers. Ce problème d'évaluation a été notamment approfondi dans notre entretien avec Giuseppe Valenzise (voir \ref{giuseppe-valenzise}).
 
 \subsubsection{Évaluation par réseau(x) tiers}
 
