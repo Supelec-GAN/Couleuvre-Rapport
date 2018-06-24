@@ -15,8 +15,9 @@ Ainsi, une classe \textit{Teacher} se charge d'apprendre aux deux réseaux en fo
 
 \subsection{Taille des réseaux - Influence}
 \paragraph{Nombre de couches}
-Les réseaux de nombre de couches complètement connectées inférieur ou égal à 2 sont majoritairement inefficaces. Des réseaux à 3 couches ont souvent été suffisants. Rajouter davantage de couches a peu d'influence, si ce n'est que le temps de calcul de la rétropropagation est grandement augmenté. Pour modifier davantage le comportement du réseau, il est nécessaire de recourir aux DCGANs (voir \ref{DCGAN}).
-\paragraph{nombre de neurone par couche}
+Les réseaux de nombre de couches complètement connectées inférieur ou égal à 2 sont majoritairement inefficaces. Des réseaux à 3 couches ont souvent été suffisants. Rajouter davantage de couches a peu d'influence, si ce n'est que le temps de calcul de la rétropropagation est grandement augmenté. De plus, on observe que des GAN à grand nombre de couche ont du mal à apprendre proprement, notamment au niveau des premières couches : le gradient devient trop faible pour ces couches, et la rétropropagation parvient difficilement à agir sur ces couches, ce qui explique le manque d'influence de ces couches plus profondes. Cette efficacité du gradient peut notamment être améliorée à l'aide de descentes de gradient adaptatives, ce qui devrait permettre un apprentissage plus profond. Les descentes adaptatives seront traitées dans le chapitre suivant sur les améliorations du GAN.\newline
+Pour modifier davantage le comportement du réseau, il est nécessaire de recourir aux DCGANs (voir \ref{DCGAN}). 
+\paragraph{Nombre de neurone par couche}
 Des couches avec plus de 1000 neurones dans une couche ont souvent été peu efficaces. On a utilisé des couches avec souvent entre 50 et 800 neurones par couche. 
 
 \subsection{Ratio d'apprentissage- Influence}
