@@ -135,7 +135,7 @@ Néanmoins, l'implémentation en C++ du GAN à convolution ne s'est jamais compo
 \subsection{Résultats}
 Un réseau de configuration $784 \times 625 \times 100 \times 10$ avec uniquement une couche à convolution donne une erreur de 10\% comme classificateur de MNIST. On réussi cependant à avoir des chiffres corrects [Voir Fig 7.2]. On pourrait améliorer l'apprentissage en faisant des réseaux plus grand et en implémentant le batch norm en théorie. On observe que les sorties de couches divergent beaucoup trop parfois. Le problème qu'on a observé le plus souvent avec des structures plus complexes, est le fait que l'un des 2 réseaux perdaient l'avantage sur l'autre résultant en une perte du gradiant. 
 
-\begin{figure}[h]
+\begin{figure}[h!]
 \begin{center}
 \includegraphics[width=1\textwidth]{images/08-DCGAN}\caption{Résultats d'un apprentissage de 2 par un DCGAN basique avec des couches à convolutions dans les premières couches des réseaux.)}
 \end{center}
@@ -166,7 +166,7 @@ Afin de mieux comprendre le fonctionnement du GAN, nous nous sommes intéressés
 
 Les résultats ne furent pas concluants. En effet, la distribution du générateur ne s'approche pas du tout de la représentation $p_{data}$ comme on peut le voir à la figure \ref{fig:gan1D}. On fait figurer en noir la distribution cible $p_{data}$, en bleu le score attribué par le discriminateur, et en rouge un histogramme des résultats du Générateur.
 
-\begin{figure}[t!]
+\begin{figure}[h!]
 \begin{center}
 \minipage{0.32\textwidth}
 \includegraphics[width=1\textwidth]{images/Gan1D-1.png}

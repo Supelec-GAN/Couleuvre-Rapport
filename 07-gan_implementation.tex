@@ -40,21 +40,22 @@ Une solution couramment adoptée est l'utilisation d'entrées, donc de bruit, su
 \section{Premiers résultats}
 
 Les résultats initiaux pour les GANs furent très encourageants. Les courbes de score du générateur (voir \ref{notations} pour la définition du score) avaient toujours la même forme, tandis que la courbe du discriminateur était parfois symétrique par rapport à la droite 0,5, mais pas dans tous les cas. On fait figurer ici quelques-uns de nos résultats initiaux
-\begin{figure}[ht!]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/18_01_12-GAN/image.png}\caption{Chiffre 8 généré un mois après l'implémentation effective du GAN - le temps de trouver des paramètres de réseau qui fonctionnent}
 \end{center}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{images/18_01_12-GAN/courbe.png}\caption{Apprentissage du Générateur associée au chiffre 8 - on affiche le score du générateur $D(G(z))$}
 \end{center}
 \end{figure}
 
-\paragraph{affichage successif d'un chiffre à différents moments de l'apprentissage}
 
-\begin{figure}[ht!]
+\paragraph{Chiffre 6 : } affichage successif d'un chiffre à différents moments de l'apprentissage
+
+\begin{figure}[H]
 \begin{center}
 \minipage{0.32\textwidth}
 \includegraphics[width=1\textwidth]{images/18_01_17-GAN/image_5000.png}
@@ -85,7 +86,7 @@ Les résultats initiaux pour les GANs furent très encourageants. Les courbes de
 \end{center}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=0.7\textwidth]{images/18_01_17-GAN/courbe.png}\caption{Apprentissage du Générateur associée au chiffre 6 - on affiche le score du générateur $D(G(z))$}
 \end{center}
@@ -94,12 +95,12 @@ Les résultats initiaux pour les GANs furent très encourageants. Les courbes de
 \subsection{Comparaison des fonctions de coût du générateur}
 Différentes fonctions de coût peuvent être utilisées pour le Générateur. Nous avons implémenté le MinMax, l'heuristique non saturante et le maximum de vraisemblance (aussi appelée KL-Divergence), et les avons comparées. On affiche en figure \ref{fig:coutgen-courbe} le score du discriminateur et générateur pour chacune des fonctions de coût du générateur. On montre à titre de comparaison le meilleur 3 obtenu pour chaque fonction de coût à la figure \ref{fig:coutgen-image}. Le meilleur 3 a à chaque fois été obtenu dans la zone de plus forte variation. Avant le réseau n'avait pas appris, après le réseau était passé en mode collapse (voir \ref{mode-collapse} pour plus d'explications). Dans le cas de l'heuristique non-saturante, l'image est prise proche au premier pic, qui est un maximum global du score du générateur.
 
-\begin{figure}[ht!]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=1\textwidth]{images/18_02_22-GAN/Comparaison_heu-minmax-kl/courbe-comparaison-dis.png}\\Score du discriminateur $D(x)$
 \end{center}
 \end{figure}
-\begin{figure}[ht!]
+\begin{figure}[H]
 \begin{center}
 \includegraphics[width=1\textwidth]{images/18_02_22-GAN/Comparaison_heu-minmax-kl/courbe-comparaison-gen.png}\\Score du générateur $D(G(z))$
 \caption{Heuristique non saturante en bleue, KL en rouge, MinMax en jaune}
@@ -107,7 +108,7 @@ Différentes fonctions de coût peuvent être utilisées pour le Générateur. N
 \end{center}
 \end{figure}
 
-\begin{figure}[ht!]
+\begin{figure}[H]
 \begin{center}
 \minipage{0.32\textwidth}
 \includegraphics[width=1\textwidth]{images/18_02_22-GAN/Comparaison_heu-minmax-kl/image-heuristique.png}
