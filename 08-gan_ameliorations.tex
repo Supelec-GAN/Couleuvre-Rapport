@@ -47,7 +47,7 @@ W_{t+1} = W_t - \dfrac{\eta}{\sqrt{g_{t+1}} + \epsilon}\frac{\partial J}{\partia
 \end{aligned}
 \end{equation} 
 
-Adagrad n'a pas été implémenté en raison des piètres performances annoncées. En effet, g est strictement croissante, étant incrémenté à chaque itération de $(\frac{\partial J}{\partial W})^2$ . Les réseaux apprenant sur un grand nombre d'itération, le coefficient $g_{t}$ devient rapidement très important, et le pas en $\dfrac{1}{\sqrt{g_{t+1}}}$ devient rapidement négligeable. Les performances de cet algorithme sont donc assez faibles.
+Adagrad n'a pas été implémenté en raison des piètres performances annoncées \cite{ruder_overview_2016}. En effet, g est strictement croissante, étant incrémenté à chaque itération de $(\frac{\partial J}{\partial W})^2$ . Les réseaux apprenant sur un grand nombre d'itération, le coefficient $g_{t}$ devient rapidement très important, et le pas en $\dfrac{1}{\sqrt{g_{t+1}}}$ devient rapidement négligeable. Les performances de cet algorithme sont donc assez faibles.
 
 \subsection{RMSprop}
 
@@ -83,7 +83,7 @@ La plupart de nos réseaux semblaient présenter une faiblesse au niveau du gén
 Utiliser la RMSProp sur les deux réseaux permet d'apprendre des chiffres de belle qualité très rapidement (convergence jusqu'à 10 fois plus rapide que sous une descente de gradient normale), cependant on observe toujours ce déséquilibre entre les deux compétiteurs. Ce système semblait étrangement relativement instable, les paramètres amenant à la convergence étant assez restreints.
 
 L’utilisation d’Adam pour le générateur et de RMSProp pour le discriminateur (ayant comme but d'entraîner mieux le générateur) semble bien fonctionner. La qualité des images est plus variable (le générateur produit des images laides et belles).
-En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le discriminateur ne fonctionne pas. Cela corrobore les résultats présentés par d'autres \cite{auriau_apprentissage_2017}.
+En revanche, l'utilisation de RMSProp pour le générateur et d'Adam pour le discriminateur ne fonctionne pas. Cela corrobore les résultats présentés par d'autres \cite{ruder_overview_2016}\cite{auriau_apprentissage_2017}.
 
 Enfin, si cela nous permet d'avoir un apprentissage plus performant, avec des images relativement belles en permettant au générateur de rester dans la course, cette solution ne permet pas de traiter le mode collapse : au contraire, l'apprentissage étant plus précis et rapide, on tombe très rapidement dans des états de mode collapse.
 
