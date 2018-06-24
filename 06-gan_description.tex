@@ -12,8 +12,6 @@ Le GAN est une structure qui fait intervenir deux réseaux placés en compétiti
 
 En 2014,l'équipe de Ian Goodfellow publie dans NIPS un article intitulé \textbf{Generative Adversarial Nets}, dans lequel il décrit une nouvelle structure censée répondre au problème de génération de donnée. Cette structure est fondée sur l'entraînement simultané de deux réseaux neuronaux en compétition, respectivement nommés \textbf{Générateur} et \textbf{Discriminateur}.  
 
-% A compléter avec l'article en question
-
 \subsection{GAN - Idée générale}
 
 Pour commencer, on souhaite obtenir un réseau qui soit capable de générer sur commande des données 
@@ -51,15 +49,17 @@ On peut schématiser de la manière suivante un réseau générateur entraîné 
 \end{center}
 \end{figure} 
 \end{example}
+
 \section{Discriminateur et Générateur}
 \subsection{Notations}
+\label{notations}
 On note $\theta^{(D)}$ et $\theta^{(G)}$ les paramètres des réseaux, représentant les valeurs de la matrice de poids et de biais de chacun des réseaux.
 
 On dispose de deux fonctions de coûts, notées $J^{(D)}(\theta^{(D)}, \theta^{(G)})$ et $J^{(G)}(\theta^{(D)}, \theta^{(G)})$, représentant respectivement les fonctions de coûts du Discriminateur et du Générateur. Dans leur notation, on montre bien que chacune d'elle dépendent des paramètres de chacun des deux réseaux. En effet, le Discriminateur apprend à discerner les fausses images issues du générateur des vrais images, tandis que le générateur apprend grâce aux indications fournies par le Discriminateur.
 
 On note $z$ l'entrée du générateur (du bruit blanc multidimensionnel), $x$ une image réelle (issue d'une banque d'image), $G(z)$ la sortie du générateur (une image générée) et enfin $D(x)$ et $D(G(z))$ la sortie du discriminateur comportant en entrée respectivement une image réel et une image générée (le score donné respectivement à une image réelle et à une image générée. $x$ est alors une variable d'observation tandis que $z$ est une variable \textit{indirecte}.
 
-$D$ et $G$ représentent alors des fonctions (différentiables) de paramètres $\theta^{(D)}$ et $\theta^{(G)}$.\\
+$D$ et $G$ représentent alors des fonctions (différentiables) de paramètres $\theta^{(D)}$ et $\theta^{(G)}$. On appellera dans toute la suite \textbf{$D(x)$ et $D(G(z))$ les scores du discriminateur et du générateur}. On considérera souvent, à des intervalles d'apprentissages données, le score cumulé, appelé plus simplement score, défini comme la norme euclidienne d'un nombre donné de scores d'images (par exemple 20 images).\\ 
 
 \begin{remark}(Bruit)
 On notera que le bruit n'est pas nécessairement présent uniquement sur la première couche, il peut être présent quel que soit la couche. Il a été implémenté avec succès (voir \textit{NoisyLayer} dans \cite{barrios_gan_2018}), et utilisé avec succès par le groupe Salamandre \cite{bouvier_dyvoire_dessine-moi_2018}.
@@ -89,7 +89,7 @@ $-\frac{1}{2}\mathbb{E}_{x~p_{data}}\log{D(x)}$ correspond à la capacité de D 
 Dans l'implémentation, par équivalence de développement limité, nous avons cherché à minimiser $-\log{(D(G(z))}$ plutôt que $\log(1-D(G(z))$.
 \end{remark}
 \paragraph{Générateur}
-Différentes fonctions de coût peuvent être utilisées pour le Générateur. Nous avons implémenté le MinMax, l'heuristique non saturante et le maximum de vraisemblance (aussi appelée KL-Divergence). 
+Différentes fonctions de coût peuvent être utilisées pour le Générateur. Nous avons implémenté le MinMax, l'heuristique non saturante et le maximum de vraisemblance (aussi appelée KL-Divergence). La définition mathématique de chacune peut être trouvée dans \cite{goodfellow_nips_2016}.
 
 \subsection{Apprentissage par récompense ou par punition ?}
 \label{subsect:Appr}
