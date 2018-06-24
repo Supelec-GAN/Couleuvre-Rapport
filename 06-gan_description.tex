@@ -72,7 +72,7 @@ La solution à ce problème peut se traduire en théorie des jeux. On obtient al
 \subsection{Les différentes distributions statistiques impliquées}
 Les distributions que l'on considère sont $p_{data}$, $p_{model}$ et $p_{G}$. $p_{G}$ correspond à la distribution représentée par le générateur, tandis que $p_{model}$ est la distribution vers lequel on souhaiterait tendre. Néanmoins, cette distribution $p_{model}$ est inatteignable car l'ensemble de la base d'apprentissage ne représente qu'une approximation de celle-ci, que nous noterons $p_{data}$. On cherche donc, par l'apprentissage semi-supervisé, à faire tendre $p_{G}$ vers $p_{data}$. \\
 \begin{remark}
-On pourrait introduire de plus une 4ème distribution $p_{D}$, qui correspondrait à l'interprétation du discriminateur de $p_{data}$. Ainsi, plus précisément, on chercherait au cours de l'apprentissage à faire tendre $p_{G}$ vers $p_{D}$ et $p_{D}$ vers $p_{data}$. Néanmoins, $p_{D}$ se construit simultanément (voir section \ref{subsect:Appr}) à partir de $p_{G}$ et $p_{data}$, ce qui rend la réflexion peu aisée. On s'en tiendra donc à  $p_{G}$ et $p_{data}$.
+On pourrait introduire de plus une 4ème distribution $p_{D}$, qui correspondrait à l'interprétation du discriminateur de $p_{data}$. Ainsi, plus précisément, on chercherait au cours de l'apprentissage à faire tendre $p_{G}$ vers $p_{D}$ et $p_{D}$ vers $p_{data}$. On a affiché cette distribution dans les graphiques relatifs au GAN 1D (en bleu) (section \ref{gan1D}). Néanmoins, $p_{D}$ se construit simultanément (voir section \ref{subsect:Appr}) à partir de $p_{G}$ et $p_{data}$, ce qui rend la réflexion peu aisée. On s'en tiendra donc à  $p_{G}$ et $p_{data}$.
 \end{remark}
 \section{Les fonctions de coût, l'apprentissage}
 
