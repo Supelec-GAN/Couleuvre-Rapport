@@ -191,7 +191,7 @@ Le discriminateur apprendra alors à se méfier de cette zone, puisque, même si
 On a donc un cercle qui fera que le générateur sera et restera dans un état de collapse. 
 Il faut alors trouver des méthodes pour empêcher le générateur de ne générer qu'une distribution très restreinte (un mode).
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/missing_modes.png}\caption{Missing modes : les points représentent les éléments de la distribution de données réelles. En bleu l'ensemble de sortie du GAN appartenant à la distribution réelle, et en rouge les zones de la distribution initiale non couverte par le GAN.}
 \end{center}
@@ -200,7 +200,7 @@ Il faut alors trouver des méthodes pour empêcher le générateur de ne génér
 Ce phénomène récurrent est observable à différents degrés : on peut avoir des collapses partiels, les données générées seront donc variables mais toute la distribution ne sera pas représentée par le générateur, ou des collapses totaux, où le générateur ne sera qu'une projection vers un point. Les données générées seront alors très proches les unes des autres.
 Nous avons été confrontés à ce problème de collapse total en générant des chiffres à partir de la base de données MNIST. Comme montré ci-dessous, en essayant de générer des 3, nous obtenons pour un réseau donné, des images générées qui sont toutes très proches, avec la même forme de 3, les mêmes pixels singuliers.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics[width=1\textwidth]{images/missing_modes_2.png}\caption{Missing modes : On obtient pour un même réseau, 3 échantillons générés qui sont sensiblement les mêmes.}
 \end{center}
@@ -212,7 +212,7 @@ Nous avons été confrontés à ce problème de collapse total en générant des
 Une première hypothèse concernant ce problème de Mode Collapse était la suivante : l'unique image produite par le générateur n'était en réalité qu'une image du masque de biais qui figeait l'image, par exemple en plaçant certains biais trop haut ou trop bas, annulant les entrées bruitées en début de réseau. On aurait alors une image déterminée uniquement par les biais, ce qui expliquerait un collapse vers une unique image.
 De plus, en observant précisément le masque de biais sous forme matricielle, on remarque que ses poids forment effectivement l'image d'un nombre, comme on peut le voir ci-dessous :
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/masqueBiais.png}\caption{Masque du biais : on peut observer que le biais forme lui même les bases d'une image, un 3 ici.}
 \end{center}
@@ -232,7 +232,7 @@ Une autre hypothèse serait que la dernière couche ne peut pas différencier le
 
 Cependant on peut observer dans des réseaux bruités, pour un même nombre d'apprentissages, des patterns généraux dans chaque image, ce qui nous montre un mode collapse partiel mais très léger comparé au précédent. De tels réseaux ont de plus besoin de beaucoup plus d'apprentissages pour donner des résultats convaincants. Cette solution nous permet donc de limiter partiellement ce problème de mode collapse.
 
-\begin{figure}[h]
+\begin{figure}[ht]
 \begin{center}
 \includegraphics[width=0.5\textwidth]{images/gan_bruite.png}\caption{Mode collapse éliminé : pour un même nombre d'apprentissages (8500 ici) on obtient un 3 et un 7 à l'aide d'un réseau bruité}
 \end{center}
