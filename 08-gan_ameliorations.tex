@@ -115,15 +115,16 @@ Les conclusions auxquelles nous avons pu aboutir au cours de l'échange étaient
 Cette section regroupe les pistes de recherche que nous avons pu rencontrer mais qui n'ont pas été approfondie faute de temps. Certaines pistes de recherches ne bénéficient pas de papiers à leur sujet.
 \begin{itemize}
 \item Étudier l’impact du nombre d’images disponibles dans la base d’entraînement. A priori, s’il est petit, l’effet d’apprentissage « par cœur » peut apparaître. Proposé par la chef de l’équipe de TaO du LRI.
+\item GAN à secousses. Le groupe Salamandre \cite{bouvier_dyvoire_dessine-moi_2018} s'y est intéressé de plus près.
 \end{itemize}
 
 \subsection{Generative Adversarial Networks 1D : Visualisation en une dimension}
-
+\label{gan1D}
 Afin de mieux comprendre le fonctionnement du GAN, nous nous sommes intéressés à l'étude du GAN à une dimension.  Le principe consiste à remplacer la banque d'image, de dimension 784, par des entrées à une dimension. On peut l'interpréter comme un scalaire, ou comme un pixel. La distribution représentée $p_{data}$ est alors une distribution unidimensionnelle, que nous allons pouvoir représenter graphiquement, plutôt qu'une distribution à 784 dimensions.
 
 Les résultats ne furent pas concluants. En effet, la distribution du générateur ne s'approche pas du tout de la représentation $p_{data}$ comme on peut le voir à la figure \ref{fig:gan1D}. On fait figurer en noir la distribution cible $p_{data}$, en bleu le score attribué par le discriminateur, et en rouge un histogramme des résultats du Générateur.
 
-\begin{figure}[h!]
+\begin{figure}[t!]
 \begin{center}
 \minipage{0.32\textwidth}
 \includegraphics[width=1\textwidth]{images/Gan1D-1.png}
@@ -139,11 +140,12 @@ Les résultats ne furent pas concluants. En effet, la distribution du générate
 \endminipage\hfill
 \caption{Graphique du GAN 1D.  La distribution prend ses valeurs entre -3 et 3}
 \label{fig:gan1D}
-
-Initialement la distribution $p_{G}$ est une distribution uniforme, ce qui est conforme aux attentes considérant que les poids du réseau sont initialisés suivant une loi uniforme. Après apprentissage, le discriminateur cherche à faire apprendre une distribution proche de $p_{data}$. Néanmoins, après un nombre supérieur d'apprentissage, le générateur est perdu. Dans notre cas, l'interprétation est la suivante : le générateur est allé dans un minimum local qui ne correspond pas au minimum que l'on cherche à atteindre. 
-
 \end{center}
-\end{figure} 
+Initialement la distribution $p_{G}$ est une distribution uniforme, ce qui est conforme aux attentes considérant que les poids du réseau sont initialisés suivant une loi uniforme. Après apprentissage, le discriminateur cherche à faire apprendre une distribution proche de $p_{data}$. Néanmoins, après un nombre supérieur d'apprentissage, le générateur est perdu. Dans notre cas, l'interprétation est la suivante : le générateur est allé dans un minimum local qui ne correspond pas au minimum que l'on cherche à atteindre. 
+\end{figure}
+
+
+ 
 
 
 
