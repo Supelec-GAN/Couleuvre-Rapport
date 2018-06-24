@@ -89,15 +89,57 @@ Enfin, si cela nous permet d'avoir un apprentissage plus performant, avec des im
 
 Ces apprentissages plus performants sont importants dans le sens où ils permettent un apprentissage plus performant des réseaux : celui-ci devrait être alors à la fois plus profond et plus précis. Cela permettrait alors de travailler correctement avec des réseaux plus grands, et des bases de données plus complexes avec des couches convolutives (CIFAR...).
 
-\section{Réseaux de convolution}
+\section{Réseaux de convolution - DCGAN}
 \label{DCGAN}
+Les réseaux de neurones à convolution se sont montrés très efficaces dans les problèmes classifications. Nous allons donc développer dans ce paragraphe notre essai d'adaptation de ce type de réseau pour le problème de génération d'images.
+
+\subsection{Principe}
+La convolution d'image permet d'intégrer la reconnaissance de pattern dans les réseaux de neurones. L'équation de propagation d'une image $p \times n \times n$ convolué par un filtre $q \times p \times m \times m$ est assez explicite :
+
+\begin{equation} 
+\begin{aligned}
+x^{l}_{i,j}(k) = \sum^{p-1}_{r=0}{\sum^{m-1}_{a=0}{\sum^{m-1}_{b=0}{w_{a,b}^{l,r}y^{r}_{(i+a),(j+b)}(k-1)}}}
+\end{aligned}
+\end{equation} 
+
+Avec $l\in [0, q-1]$ et $(i,j)\in [0, n-m+1]^2$ \\
+Ici, l itère sur les channels (images parallèles) et i,j sont les coordonées d'un pixel d'une image.
+
+Ce qui nous donne par la formule de la chaîne, ces équations de rétropropagation pour la $k^{e}$ couche :
+
+\begin{equation} 
+\begin{aligned}
+\frac{\partial E}{\partial w_{a,b}^{l,r}} = \sum^{n-m}_{i=0}{\sum^{n-m}_{j=0}{\frac{\partial E}{\partial x^{l}_{i,j}(k)}y^{r}_{(i+a),(j+b)}(k-1)}} \\ 
+\frac{\partial E}{\partial x_{i,j}^{l}(k)} = \frac{\partial E}{\partial y_{i,j}^{l}(k)}\sigma ' (x^{l}_{i,j}(k)) \\
+\frac{\partial E}{\partial y_{i,j}^{l}(k-1)} = \sum^{q-1}_{r=0}\sum^{m-1}_{a=0}{\sum^{m-1}_{b=0}{\frac{\partial E}{\partial x^{r}_{(i-a),(j-b)}(k)}w^{r,l}_{a,b}(k)}} 
+\end{aligned}
+\end{equation} 
+
+\subsection{Paramètres des convolutions}
+Ces équations ne couvrent que le cas classique, mais on peut faire varier plusieurs paramètres tels que : 
+\begin{itemize}
+\item Strides : le pas du décalage du filtre sur l'image (par défaut : 1)
+\item ZéroPadding : ajout de zéro autour de l'image ou entre les pixels de l'image. (par défaut : 0)
+\item Nombre de channels : nombre d'images en entrée et en sortie
+\end{itemize}
+De plus, d'après la littérature, il semblerait que la fonction d'activation optimale à la sortie d'une couche de convolution serait la ReLu et qu'un Batch Norm éviterait un hausse trop hautes des coefficients.
+
+\subsection{Structure du DCGAN}
+Nous avons essayé plusieurs structures différentes sans trop de résultats flagrants (pas meilleurs que le perceptron). Nous n'avons pas pu essayer la structure décrite dans le papier de Goodfellow à ce sujet (Générateur avec que des déconvolutions et Discriminateur avec que des convolutions). Nous avons pu tester avec des convolution simples au début des deux réseaux de neurones, et on a eu quelques chiffres corrects.
+
 \subsection{Implémentation}
-Comme indiqué au \ref{implementation-C++-convolution}, nous avons dû coder la convolution à la main.
+Comme indiqué au \ref{implementation-C++-convolution}, nous avons dû coder la convolution à la main. (NB : Les smart pointers ne sont PAS thread safe)
 Afin de mettre en place un réseau à convolution, nous avons implémenté les différentes couches nécessaires : couche à convolution, couche de \textit{zero-padding} et couche de \textit{max-pooling}.
-Néanmoins, l'implémentation en C++ du GAN à convolution ne s'est jamais comportée comme souhaitée. En effet, quel que soit le paramétrage, le réseau produit des résultats comparables à ceux obtenus avec un perceptron simple. Cela a donc eu des répercussions sur nos avancées (par exemple les tests sur la banque d'image CIFAR10 n'ont pas donné de résultats concluants - nous ne les présenterons donc pas).
+Néanmoins, l'implémentation en C++ du GAN à convolution ne s'est jamais comportée comme souhaitée. En effet, quel que soit le paramétrage, le réseau produit des résultats comparables à ceux obtenus avec un perceptron simple. Cela a donc eu des répercussions sur nos avancées (par exemple les tests sur la banque d'image CIFAR10 n'ont pas donné de résultats concluants - nous ne les présenterons donc pas). 
 
 \subsection{Résultats}
-Un réseau de configuration $784 \times 625 \times 100 \times 10$ avec uniquement une couche à convolution donne une erreur de 10\% comme classificateur de MNIST. [Manu : développer résultats du 25 mai (voir EdL et slides)]
+Un réseau de configuration $784 \times 625 \times 100 \times 10$ avec uniquement une couche à convolution donne une erreur de 10\% comme classificateur de MNIST. On réussi cependant à avoir des chiffres corrects [Voir Fig 7.2]. On pourrait améliorer l'apprentissage en faisant des réseaux plus grand et en implémentant le batch norm en théorie. On observe que les sorties de couches divergent beaucoup trop parfois. Le problème qu'on a observé le plus souvent avec des structures plus complexes, est le fait que l'un des 2 réseaux perdaient l'avantage sur l'autre résultant en une perte du gradiant. 
+
+\begin{figure}[h]
+\begin{center}
+\includegraphics[width=1\textwidth]{images/08-DCGAN}\caption{Résultats d'un apprentissage de 2 par un DCGAN basique avec des couches à convolutions dans les premières couches des réseaux.)}
+\end{center}
+\end{figure} 
 
 \section{Échanges avec Giuseppe Valenzise}
 Dans le domaine d'évaluation de la qualité des images, on distingue l'estimation avec référence (comparaison par rapport à une image) de l'estimation sans référence.
@@ -146,7 +188,5 @@ Initialement la distribution $p_{G}$ est une distribution uniforme, ce qui est c
 
 
  
-
-
 
 
