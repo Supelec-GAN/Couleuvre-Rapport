@@ -14,8 +14,10 @@ La structure de notre \textit{Generative Adversarial Networks} diffère assez pe
 Ainsi, une classe \textit{Teacher} se charge d'apprendre aux deux réseaux en fonction des paramètres que l'on définit dans un fichier de configuration json. Enfin, pour une plus grande souplesse dans la création de nos réseaux, nous avons implémenté divers types de couches de neurones, avec NeuronLayer classe abstraite mère, dont découlent les couches bruitées (NoisyLayer), les couches de perceptrons classiques (FullConnectedLayer), et les différentes couches à convolution (traitées dans le chapitre suivant).
 
 \subsection{Taille des réseaux - Influence}
-
-
+\paragraph{Nombre de couches}
+Les réseaux de nombre de couches complètement connectées inférieur ou égal à 2 sont majoritairement inefficaces. Des réseaux à 3 couches ont souvent été suffisants. Rajouter davantage de couches a peu d'influence, si ce n'est que le temps de calcul de la rétropropagation est grandement augmenté. Pour modifier davantage le comportement du réseau, il est nécessaire de recourir aux DCGANs (voir \ref{DCGAN}).
+\paragraph{nombre de neurone par couche}
+Des couches avec plus de 1000 neurones dans une couche ont souvent été peu efficaces. On a utilisé des couches avec souvent entre 50 et 800 neurones par couche. 
 
 \subsection{Ratio d'apprentissage- Influence}
 
@@ -36,7 +38,95 @@ Une solution couramment adoptée est l'utilisation d'entrées, donc de bruit, su
 
 \section{Premiers résultats}
 
+Les résultats initiaux pour les GANs furent très encourageants. Les courbes de score du générateur (voir \ref{notations} pour la définition du score) avaient toujours la même forme, tandis que la courbe du discriminateur était parfois symétrique par rapport à la droite 0,5, mais pas dans tous les cas. On fait figurer ici quelques-uns de nos résultats initiaux
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.5\textwidth]{images/18_01_12-GAN/image.png}\caption{Chiffre 8 généré un mois après l'implémentation effective du GAN - le temps de trouver des paramètres de réseau qui fonctionnent}
+\end{center}
+\end{figure}
 
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/18_01_12-GAN/courbe.png}\caption{Apprentissage du Générateur associée au chiffre 8 - on affiche le score du générateur $D(G(z))$}
+\end{center}
+\end{figure}
+
+\paragraph{affichage successif d'un chiffre à différents moments de l'apprentissage}
+
+\begin{figure}[h!]
+\begin{center}
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_01_17-GAN/image_5000.png}
+\centering\\5000 apprentissages
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_01_17-GAN/image_10000.png}
+\centering\\10000 apprentissages
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_01_17-GAN/image_15000.png}
+\centering\\15000 apprentissages
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_01_17-GAN/image_50000.png}
+\centering\\50000 apprentissages
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_01_17-GAN/image_90000.png}
+\centering\\90000 apprentissages
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_01_17-GAN/image_95000.png}
+\centering\\95000 apprentissages
+\endminipage\hfill
+\caption{affichage successif du chiffre 6 à différents moments de l'apprentissage}
+\label{fig:res2}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=0.7\textwidth]{images/18_01_17-GAN/courbe.png}\caption{Apprentissage du Générateur associée au chiffre 6 - on affiche le score du générateur $D(G(z))$}
+\end{center}
+\end{figure}
+
+\subsection{Comparaison des fonctions de coût du générateur}
+Différentes fonctions de coût peuvent être utilisées pour le Générateur. Nous avons implémenté le MinMax, l'heuristique non saturante et le maximum de vraisemblance (aussi appelée KL-Divergence), et les avons comparées. On affiche en figure \ref{fig:coutgen-courbe} le score du discriminateur et générateur pour chacune des fonctions de coût du générateur. On montre à titre de comparaison le meilleur 3 obtenu pour chaque fonction de coût à la figure \ref{fig:coutgen-image}. Le meilleur 3 a à chaque fois été obtenu dans la zone de plus forte variation. Avant le réseau n'avait pas appris, après le réseau était passé en mode collapse (voir \label{mode-collapse} pour plus d'explications). Dans le cas de l'heuristique non-saturante, l'image est prise proche au premier pic, qui est un maximum global du score du générateur.
+
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=1\textwidth]{images/18_02_22-GAN/Comparaison_heu-minmax-kl/courbe-comparaison-dis.png}\\Score du discriminateur $D(x)$
+\end{center}
+\end{figure}
+\begin{figure}[h!]
+\begin{center}
+\includegraphics[width=1\textwidth]{images/18_02_22-GAN/Comparaison_heu-minmax-kl/courbe-comparaison-gen.png}\\Score du générateur $D(G(z))$
+\caption{Heuristique non saturante en bleue, KL en rouge, MinMax en jaune}
+\label{fig:coutgen-courbe}
+\end{center}
+\end{figure}
+
+\begin{figure}[h!]
+\begin{center}
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_02_22-GAN/Comparaison_heu-minmax-kl/image-heuristique.png}
+\centering\\Heuristique non saturante
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_02_22-GAN/Comparaison_heu-minmax-kl/image-kl_divergence.png}
+\centering\\KL-Divergence
+\endminipage\hfill
+\minipage{0.32\textwidth}
+\includegraphics[width=1\textwidth]{images/18_02_22-GAN/Comparaison_heu-minmax-kl/image-minmax.png}
+\centering\\MinMax
+\endminipage\hfill
+\caption{Comparaison de la qualité d'image pour 3 fonctions de coût du générateur différentes}
+\label{fig:coutgen-image}
+\end{center}
+\end{figure}
+
+On remarque que la KL-divergence et le MinMax prennent beaucoup de temps à se mettre en place et collapse rapidement, tandis que l'heuristique non-saturante permet d'obtenir un résultat satisfaisant très tôt dans l'apprentissage.
+Nous avons effectué pour ces raisons par la suite la majorités des tests avec l'heuristique non-saturante.
 
 \section{Difficultés rencontrées et solutions émises}
 
@@ -90,6 +180,7 @@ On pourrait envisager de créer une échelle d'évaluateurs, constituée de plus
 
 \subsection{Mode Collapse du \textit{Générateur} vers un unique point}
 \subsubsection{Présentation du problème}
+\label{mode-collapse}
 
 Un problème récurrent que l'on peut observer dans les GAN est le \textit{mode collapse}, ou \textit{missing modes}. Prenons un GAN, le générateur doit tenter de créer des images les plus réalistes possible par rapport à une distribution de données réelles, par l'intermédiaire du discriminateur. Cette distribution peut présenter plusieurs modes, plusieurs zones en quelque sorte (En reprenant l'exemple des chiffres de MNIST, on peut vouloir générer des 3, ou des 4). 
 \\ \\
